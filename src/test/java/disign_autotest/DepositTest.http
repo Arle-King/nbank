@@ -1,0 +1,61 @@
+//результаты проготов можно буднт псомтреть через get all users в precondicion
+
+### позитивный тест на пополнение от 0 и до 5001
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "id": 1,
+  "balance": 100
+}
+
+### позитивный тест на пополнение 5000
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "id": 1,
+  "balance": 5000
+}
+
+### негативный тест на пополнение 0
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "id": 1,
+  "balance": 0
+}
+
+### негативный тест на пополнение меньше 0
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "id": 1,
+  "balance": -1
+}
+
+### негативный тест на пополнение чужого счёта
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "id": 2,
+  "balance": 100
+}
+
+### негативный тест на пополнение несуществующего счёта
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "id": 0,
+  "balance": 100
+}
