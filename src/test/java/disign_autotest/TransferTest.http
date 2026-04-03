@@ -1,0 +1,78 @@
+### Добавим баланс user2, чтобы проверить работу транзакций (Используем 5 раз)
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic dXNlcjI6UGFzc3dvcmQjMg==
+
+{
+  "id": 2,
+  "balance": 5000
+}
+
+//по хорошему этот тест разделить на 2, но время не резиновое
+### позитивный тест на перевод 10 000 на чужой аккаунт
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic dXNlcjI6UGFzc3dvcmQjMg==
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 3,
+  "amount": 10000
+}
+
+### позитивный тест на перевод 100 на свой аккаунт
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic dXNlcjI6UGFzc3dvcmQjMg==
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 4,
+  "amount": 100
+}
+
+### негативный тест на перевод 0 на свой аккаунт
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic dXNlcjI6UGFzc3dvcmQjMg==
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 4,
+  "amount": 0
+}
+
+//тест x < 0 по идее избыточен, но в банковской сфере бережёного бог бережёт
+### негативный тест на перевод меньше 0
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic dXNlcjI6UGFzc3dvcmQjMg==
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 4,
+  "amount": -1
+}
+
+### негативный тест на перевод больше 10 000 на свой аккаунт
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic dXNlcjI6UGFzc3dvcmQjMg==
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 4,
+  "amount": 10001
+}
+
+//по идее предыдущий тест не должен выполнится и на 4 акке только 100 денег
+### негативный тест на перевод суммы большей, чем есть на аккаунте
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic dXNlcjI6UGFzc3dvcmQjMg==
+
+{
+  "senderAccountId": 4,
+  "receiverAccountId": 2,
+  "amount": 10000
+}

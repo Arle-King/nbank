@@ -1,0 +1,25 @@
+### Get all users
+GET http://localhost:4111/api/v1/admin/users
+Authorization: Basic YWRtaW46YWRtaW4=
+
+### Create user1
+POST http://localhost:4111/api/v1/admin/users
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "username": "user1",
+  "password": "Password#1",
+  "role": "USER"
+}
+
+### Create user2
+POST http://localhost:4111/api/v1/admin/users
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "username": "user2",
+  "password": "Password#2",
+  "role": "USER"
+}
