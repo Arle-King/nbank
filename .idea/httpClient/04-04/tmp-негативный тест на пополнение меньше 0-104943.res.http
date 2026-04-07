@@ -1,0 +1,19 @@
+// Status: 400, time: 75ms, size: 25 B
+### негативный тест на пополнение меньше 0
+POST http://localhost:4111/api/v1/accounts/deposit HTTP/1.1
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+connection: close
+content-length: 25
+content-type: text/plain;charset=UTF-8
+date: Sat, 04 Apr 2026 19:49:43 GMT
+expires: 0
+pragma: no-cache
+vary: Origin
+vary: Access-Control-Request-Method
+vary: Access-Control-Request-Headers
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+
+Invalid account or amount
+>> C:\Users\leps-\IdeaProjects\nbank\.idea\httpClient\04-04\негативный тест на пополнение меньше 0\2026-04-04T224943.txt

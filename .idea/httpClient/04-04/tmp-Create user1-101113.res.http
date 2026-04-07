@@ -1,0 +1,26 @@
+// Status: 201, time: 348ms, size: 141 B
+### Create user1
+POST http://localhost:4111/api/v1/admin/users HTTP/1.1
+authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+content-type: application/json
+date: Sat, 04 Apr 2026 19:11:13 GMT
+expires: 0
+pragma: no-cache
+transfer-encoding: chunked
+vary: Origin
+vary: Access-Control-Request-Method
+vary: Access-Control-Request-Headers
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+
+{
+  "id": 1,
+  "username": "user1",
+  "password": "$2a$10$aJV/XEkLgboT077gLIKADu9JD2IvZ1HeT7Bac86fQIY8N6xC9dKvK",
+  "name": null,
+  "role": "USER",
+  "accounts": []
+}
+>> C:\Users\leps-\IdeaProjects\nbank\.idea\httpClient\04-04\Create user1\2026-04-04T221113.json

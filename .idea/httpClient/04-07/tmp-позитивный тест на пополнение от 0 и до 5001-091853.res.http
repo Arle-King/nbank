@@ -1,0 +1,18 @@
+// Status: 403, time: 73ms, size: 30 B
+### позитивный тест на пополнение от 0 и до 5001
+POST http://localhost:4111/api/v1/accounts/deposit HTTP/1.1
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+content-length: 30
+content-type: text/plain;charset=UTF-8
+date: Tue, 07 Apr 2026 18:18:53 GMT
+expires: 0
+pragma: no-cache
+vary: Origin
+vary: Access-Control-Request-Method
+vary: Access-Control-Request-Headers
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+
+Unauthorized access to account
+>> C:\Users\leps-\IdeaProjects\nbank\.idea\httpClient\04-07\позитивный тест на пополнение от 0 и до 5001\2026-04-07T211853.txt

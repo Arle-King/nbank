@@ -1,0 +1,6 @@
+// Size: 0 B
+### Create account user1
+POST http://localhost:4111/api/v1/accounts HTTP/1.1
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+Content-Length: 0
+
