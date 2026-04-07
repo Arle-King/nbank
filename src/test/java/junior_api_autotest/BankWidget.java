@@ -69,4 +69,37 @@ public class BankWidget extends BankRequest {
             amount = amount - 5000;
         } while (amount > 0);
     }
+
+    public static Double getUserBalance(int accountId) {
+        String jsonPath = String.format("find { it.accounts.find { it.id == %d } }.accounts.find { it.id == %d }.balance", accountId, accountId);
+        Object balance = RestAssured.given()
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
+                .filter(new ErrorLoggingFilter())
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .header("Authorization", "Basic YWRtaW46YWRtaW4=")
+                .get("http://localhost:4111/api/v1/admin/users")
+                .then()
+                .extract()
+                .path(jsonPath);
+        return balance instanceof Number ? ((Number) balance).doubleValue() : null;
+    }
+
+    public static String getUserName(String token) {
+        String jsonPath = String.format("$.name");
+
+        return RestAssured.given()
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
+                .filter(new ErrorLoggingFilter())
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .header("Authorization", token)
+                .get("http://localhost:4111/api/v1/customer/profile")
+                .then()
+                .extract()
+                .jsonPath()
+                .getString("name");
+    }
 }

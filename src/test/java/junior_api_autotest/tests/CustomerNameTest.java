@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import io.restassured.http.ContentType;
 import junior_api_autotest.BankRequest;
 import junior_api_autotest.BankWidget;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,16 +22,27 @@ public class CustomerNameTest extends BankRequest {
     JsonObject customName;
     String userToken;
 
+    SoftAssertions softAssertions;
+
     @BeforeEach
     public void precondition() {
         customName = new JsonObject();
 
         userToken = BankWidget.createUserAndGetToken();
+
+        softAssertions = new SoftAssertions();
+    }
+
+    @AfterEach
+    public void postcondition() {
+        softAssertions.assertAll();
     }
 
     @ParameterizedTest
     @MethodSource("provaderCutomerName")
     public void customerNameTest(String name, int statusCode) {
+
+        softAssertions.assertThat(BankWidget.getUserName(userToken)).as("Name не соответствует ожидаемому").isEqualTo(null);
 
         customName.addProperty("name", name);
 
@@ -41,6 +54,12 @@ public class CustomerNameTest extends BankRequest {
                 .then()
                 .assertThat()
                 .statusCode(statusCode);
+
+        if (statusCode == 200) {
+            softAssertions.assertThat(BankWidget.getUserName(userToken)).as("Name не соответствует ожидаемому").isEqualTo(name);
+        } else {
+            softAssertions.assertThat(BankWidget.getUserName(userToken)).as("Name не соответствует ожидаемому").isEqualTo(null);
+        }
 
     }
 

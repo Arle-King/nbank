@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import io.restassured.http.ContentType;
 import junior_api_autotest.BankRequest;
 import junior_api_autotest.BankWidget;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,13 +23,21 @@ public class DepositTest extends BankRequest {
     JsonObject deposit;
     String userToken;
     int accountId;
-
+    SoftAssertions softAssertions;
 
     @BeforeEach
     public void precondition() {
         deposit = new JsonObject();
         userToken = BankWidget.createUserAndGetToken();
         accountId = BankWidget.createAndGetIdAccount(userToken);
+
+        softAssertions = new SoftAssertions();
+        softAssertions.assertThat(BankWidget.getUserBalance(accountId)).as("Аккаунт создался с балансом != 0").isEqualTo(0.0);
+    }
+
+    @AfterEach
+    public void postcondition() {
+        softAssertions.assertAll();
     }
 
     @ParameterizedTest
@@ -44,6 +54,12 @@ public class DepositTest extends BankRequest {
                 .then()
                 .assertThat()
                 .statusCode(statusCode);
+
+        if(statusCode == 200) {
+            softAssertions.assertThat(BankWidget.getUserBalance(accountId)).as("Баланс не соответствует ожидаемому").isEqualTo(balance);
+        } else {
+            softAssertions.assertThat(BankWidget.getUserBalance(accountId)).as("Баланс не соответствует ожидаемому").isEqualTo(0.0);
+        }
     }
 
     @Test
@@ -62,6 +78,8 @@ public class DepositTest extends BankRequest {
                 .then()
                 .assertThat()
                 .statusCode(403);
+
+        softAssertions.assertThat(BankWidget.getUserBalance(accountId)).as("Баланс не соответствует ожидаемому").isEqualTo(0.0);
     }
 
     @Test
@@ -78,6 +96,8 @@ public class DepositTest extends BankRequest {
                 .then()
                 .assertThat()
                 .statusCode(403);
+
+        softAssertions.assertThat(BankWidget.getUserBalance(accountId)).as("Баланс не соответствует ожидаемому").isEqualTo(0.0);
     }
 
     public static Stream<Arguments> provaderDeposit() {

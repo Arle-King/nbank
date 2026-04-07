@@ -4,7 +4,10 @@ import com.google.gson.JsonObject;
 import io.restassured.http.ContentType;
 import junior_api_autotest.BankRequest;
 import junior_api_autotest.BankWidget;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,6 +29,8 @@ public class TransferTest extends BankRequest {
 
     String secondUserOneToken;
 
+    SoftAssertions softAssertions;
+
 
     @BeforeEach
     public void precondition() {
@@ -39,6 +44,14 @@ public class TransferTest extends BankRequest {
         secondUserOneToken = BankWidget.createUserAndGetToken();
         accountId.add(BankWidget.createAndGetIdAccount(secondUserOneToken));
         accountId.add(0);
+
+        softAssertions = new SoftAssertions();
+        softAssertions.assertThat(BankWidget.getUserBalance(accountId.get(0))).as("Аккаунт создался с балансом != 0").isEqualTo(0.0);
+    }
+
+    @AfterEach
+    public void postcondition() {
+        softAssertions.assertAll();
     }
 
     @ParameterizedTest
@@ -59,6 +72,36 @@ public class TransferTest extends BankRequest {
                 .assertThat()
                 .statusCode(statusCode);
 
+        if (statusCode == 200) {
+            softAssertions.assertThat(BankWidget.getUserBalance(accountId.get(0))).as("Баланс не соответствует ожидаемому").isEqualTo(balance - amount);
+            softAssertions.assertThat(BankWidget.getUserBalance(accountId.get(receiverAccountId))).as("Баланс не соответствует ожидаемому").isEqualTo(amount);
+        } else {
+            softAssertions.assertThat(BankWidget.getUserBalance(accountId.get(0))).as("Баланс не соответствует ожидаемому").isEqualTo(balance);
+            softAssertions.assertThat(BankWidget.getUserBalance(accountId.get(receiverAccountId))).as("Баланс не соответствует ожидаемому").isEqualTo(0.0);
+        }
+
+    }
+
+    @Test // перевод на несуществующий счёт
+    public void positivTest() {
+        BankWidget.dodepInAccount(firstUserToken, accountId.get(0), 4000);
+
+        transfer.addProperty("senderAccountId", accountId.get(0));
+        transfer.addProperty("receiverAccountId", accountId.get(3));
+        transfer.addProperty("amount", 3500);
+
+        spec.contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .header("Authorization", firstUserToken)
+                .body(transfer)
+                .post(baseUrl + versionApi + subService + endPoint)
+                .then()
+                .assertThat()
+                .statusCode(400);
+
+            softAssertions.assertThat(BankWidget.getUserBalance(accountId.get(0))).as("Баланс не соответствует ожидаемому").isEqualTo(4000);
+            softAssertions.assertThat(BankWidget.getUserBalance(accountId.get(3))).as("Баланс не соответствует ожидаемому").isEqualTo(null);
+
     }
 
     // 0 - основной счёт, 1 - доп счёт, 2 - чужой счёт, 3 - несуществующий счёт
@@ -69,8 +112,7 @@ public class TransferTest extends BankRequest {
                 Arguments.of( 100, 1, 0, 400), // перевод 0 денег
                 Arguments.of( 1000, 1, -100, 400), // перевод отрицательного кол-ва денег
                 Arguments.of( 10100, 1, 10050, 400), // выход за пределы допустимого перевода
-                Arguments.of( 4000, 1, 4500, 400), // перевод без необходимой суммы на счету
-                Arguments.of( 4000, 3, 3500, 400) // // перевод на несуществующий счёт
+                Arguments.of( 4000, 1, 4500, 400) // перевод без необходимой суммы на счету
         );
     }
 }
