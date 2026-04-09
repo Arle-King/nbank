@@ -31,14 +31,14 @@ public class TransferTest {
 
     SoftAssertions softAssertions;
     CreateUserRequestDTO userRequest1;
-    CreateUserRequestDTO userRequest2;
-    UserResponseDTO user1;
-    UserResponseDTO user2;
     List<CreateUserAccountResponseDTO> userAccounts;
 
     @BeforeEach
     public void precondition() {
         softAssertions = new SoftAssertions();
+        UserResponseDTO user1;
+        UserResponseDTO user2;
+        CreateUserRequestDTO userRequest2;
 
         userRequest1 = CreateUserRequestDTO.builder()
                 .userName(RandomData.getRandomUserName())

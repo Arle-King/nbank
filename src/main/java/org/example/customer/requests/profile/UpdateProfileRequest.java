@@ -9,8 +9,8 @@ import org.example.interfaces.Updatble;
 
 import static io.restassured.RestAssured.given;
 
-public class ProfileRequest extends Request implements Updatble {
-    public ProfileRequest(RequestSpecification spec, ResponseSpecification resp) {
+public class UpdateProfileRequest extends Request implements Updatble {
+    public UpdateProfileRequest(RequestSpecification spec, ResponseSpecification resp) {
         super(spec, resp);
     }
 

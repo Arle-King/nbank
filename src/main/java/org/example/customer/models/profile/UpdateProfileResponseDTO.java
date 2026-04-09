@@ -5,7 +5,7 @@ import org.example.general_models.AccountDTO;
 
 import java.util.List;
 
-public class ProfileResponseDTO {
+public class UpdateProfileResponseDTO {
     @SerializedName("id")
     private int id;
 

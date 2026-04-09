@@ -27,4 +27,10 @@ public class ResponceSpecs {
                 .expectStatusCode(HttpStatus.SC_BAD_REQUEST)
                 .build();
     }
+
+    public static ResponseSpecification requestReturnsUnprecessableEntity() {
+        return defaultResponseBuilder()
+                .expectStatusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
+                .build();
+    }
 }

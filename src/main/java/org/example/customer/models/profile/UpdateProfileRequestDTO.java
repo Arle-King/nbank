@@ -11,7 +11,7 @@ import org.example.BaseModel;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProfileRequestDTO extends BaseModel {
+public class UpdateProfileRequestDTO extends BaseModel {
     @SerializedName("name")
     private String name;
 }
