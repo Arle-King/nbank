@@ -11,6 +11,6 @@ public class RandomData {
     }
 
     public static String getRandomPassword() {
-        return RandomStringUtils.randomAlphanumeric(8) + "#2";
+        return RandomStringUtils.randomAlphanumeric(4).toLowerCase() + RandomStringUtils.randomAlphanumeric(4).toUpperCase() + "#2";
     }
 }

@@ -1,21 +1,15 @@
-package org.example.models.users;
+package org.example.general_models;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.example.models.BaseModel;
+import lombok.*;
+import org.example.BaseModel;
 
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class CreateUserResponseDTO extends BaseModel {
+public class UserResponseDTO extends BaseModel {
     @SerializedName("id")
-    private String id;
+    private int id;
 
     @SerializedName("username")
     private String userName;
@@ -30,5 +24,5 @@ public class CreateUserResponseDTO extends BaseModel {
     private String role;
 
     @SerializedName("accounts")
-    private List<String> accounts;
+    private List<AccountDTO> accounts;
 }

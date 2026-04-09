@@ -21,4 +21,10 @@ public class ResponceSpecs {
                 .expectStatusCode(HttpStatus.SC_OK)
                 .build();
     }
+
+    public static ResponseSpecification requestReturnsBadRequest() {
+        return defaultResponseBuilder()
+                .expectStatusCode(HttpStatus.SC_BAD_REQUEST)
+                .build();
+    }
 }

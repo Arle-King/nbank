@@ -1,12 +1,11 @@
-package org.example.models.users;
+package org.example.admin.models;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.example.models.BaseModel;
+import lombok.*;
+import org.example.BaseModel;
+import org.example.UserRole;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

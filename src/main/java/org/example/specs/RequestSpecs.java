@@ -6,8 +6,8 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import org.example.models.users.LoginUserRequestDTO;
-import org.example.requests.LoginUserRequest;
+import org.example.authentication.models.LoginRequestDTO;
+import org.example.authentication.requests.LoginRequest;
 
 import java.util.List;
 
@@ -32,10 +32,10 @@ public class RequestSpecs {
     }
 
     public static RequestSpecification getUserSpec(String userName, String password) {
-        String token = new LoginUserRequest(
+        String token = new LoginRequest(
                 RequestSpecs.getUnAuthSpec(),
                 ResponceSpecs.requestReturnsOk())
-                .post(LoginUserRequestDTO.builder().userName(userName).password(password).build())
+                .post(LoginRequestDTO.builder().userName(userName).password(password).build())
                 .extract()
                 .header("Authorization");
 
