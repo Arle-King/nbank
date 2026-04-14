@@ -20,7 +20,7 @@ public class ValidatedCrudRequest<M extends BaseModel> extends HttpRequest imple
     }
 
     @Override
-    public Object get(int id) {
+    public Object get(int... id) {
         return null;
     }
 
@@ -30,17 +30,17 @@ public class ValidatedCrudRequest<M extends BaseModel> extends HttpRequest imple
     }
 
     @Override
-    public Object update(int id, BaseModel model) {
+    public Object update(BaseModel model, int... id) {
         return null;
     }
 
     @Override
-    public Object update(BaseModel model) {
-        return null;
+    public M update(BaseModel model) {
+        return (M) crudRequest.update(model).extract().as(endpoint.getResponseModel());
     }
 
     @Override
-    public Object delete(int id) {
+    public Object delete(int... id) {
         return null;
     }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @Getter
 public class CreateUserResponseDTO extends BaseModel {
+
     @SerializedName("id")
     private int id;
 
@@ -29,4 +30,8 @@ public class CreateUserResponseDTO extends BaseModel {
 
     @SerializedName("accounts")
     private List<AccountDTO> accounts;
+
+    private transient String token;
+
+    private transient String unencryptedPassword;
 }

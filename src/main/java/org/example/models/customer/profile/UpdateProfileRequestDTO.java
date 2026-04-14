@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.generators.GeneratingRule;
 import org.example.models.BaseModel;
 
 @Data
@@ -13,5 +14,6 @@ import org.example.models.BaseModel;
 @Builder
 public class UpdateProfileRequestDTO extends BaseModel {
     @SerializedName("name")
+    @GeneratingRule(regex = "^[a-zA-Z]{3,4} [a-zA-Z]{3,4}")
     private String name;
 }

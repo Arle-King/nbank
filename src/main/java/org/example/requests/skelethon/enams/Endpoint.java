@@ -9,11 +9,13 @@ import org.example.models.accoints.accounts.DeleteAccountRequestDTO;
 import org.example.models.accoints.accounts.DeleteAccountResponseDTO;
 import org.example.models.accoints.deposit.DepositRequestDTO;
 import org.example.models.accoints.deposit.DepositResponseDTO;
+import org.example.models.accoints.transactions.TransactionsRequestDTO;
 import org.example.models.accoints.transfer.TransferRequestDTO;
 import org.example.models.accoints.transfer.TransferResponseDTO;
 import org.example.models.admin.users.*;
 import org.example.models.authentication.login.LoginRequestDTO;
 import org.example.models.authentication.login.LoginResponseDTO;
+import org.example.models.customer.accounts.GetCustomerAccount;
 import org.example.models.customer.profile.GetCustomerProfileRequestDTO;
 import org.example.models.customer.profile.GetCustomerProfileResponseDTO;
 import org.example.models.customer.profile.UpdateProfileRequestDTO;
@@ -22,35 +24,11 @@ import org.example.models.customer.profile.UpdateProfileResponseDTO;
 @Getter
 @AllArgsConstructor
 public enum Endpoint {
-
-    CREATE_USER(
-            "/admin/users",
-            CreateUserRequestDTO.class,
-            CreateUserResponseDTO.class
-    ),
-
-    DELETE_USER(
-            "/admin/users",
-            DeleteUserRequestDTO.class,
-            DeleteUserResponseDTO.class
-    ),
-
-    GET_ALL_USERS(
-            "/admin/users",
-            AllUsersRequestDTO.class,
-            CreateUserResponseDTO.class
-    ),
-
+    //Accounts
     CREATE_ACCOUNT(
             "/accounts",
             CreateAccountRequestDTO.class,
             CreateAccountResponseDTO.class
-    ),
-
-    DELETE_ACCOUNT(
-            "/accounts",
-            DeleteAccountRequestDTO.class,
-            DeleteAccountResponseDTO.class
     ),
 
     TRANSFER(
@@ -65,12 +43,45 @@ public enum Endpoint {
             DepositResponseDTO.class
     ),
 
+    GET_TRANSACTIONS(
+            "/accounts/id#1/transactions",
+            TransactionsRequestDTO.class,
+            TransferResponseDTO.class
+    ),
+
+    DELETE_ACCOUNT(
+            "/accounts/id#1",
+            DeleteAccountRequestDTO.class,
+            DeleteAccountResponseDTO.class
+    ),
+
+    //Admin
+    GET_ALL_USERS(
+            "/admin/users",
+            AllUsersRequestDTO.class,
+            AllUsersResponseDTO.class
+    ),
+
+    CREATE_USER(
+            "/admin/users",
+            CreateUserRequestDTO.class,
+            CreateUserResponseDTO.class
+    ),
+
+    DELETE_USER(
+            "/admin/users/id#1",
+            DeleteUserRequestDTO.class,
+            DeleteUserResponseDTO.class
+    ),
+
+    //Authentication
     LOGIN(
             "/auth/login",
             LoginRequestDTO.class,
             LoginResponseDTO.class
     ),
 
+    //Customer
     UPDATE_PROFILE(
             "/customer/profile",
             UpdateProfileRequestDTO.class,
@@ -81,6 +92,12 @@ public enum Endpoint {
             "/profile",
             GetCustomerProfileRequestDTO.class,
             GetCustomerProfileResponseDTO.class
+    ),
+
+    GET_CUSTOMER_ACCOUNTS(
+          "/customer/accounts",
+            null,
+            GetCustomerAccount.class
     );
 
     private final String endpoint;

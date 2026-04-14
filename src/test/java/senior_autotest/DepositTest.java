@@ -1,15 +1,12 @@
 package senior_autotest;
 
 import org.assertj.core.api.SoftAssertions;
-import org.example.generators.RandomData;
-import org.example.models.accoints.accounts.CreateAccountRequestDTO;
+import org.example.BankWidget;
 import org.example.models.accoints.accounts.CreateAccountResponseDTO;
 import org.example.models.accoints.deposit.DepositRequestDTO;
-import org.example.models.admin.users.CreateUserRequestDTO;
-import org.example.requests.skelethon.requests.CrudRequest;
+import org.example.models.admin.users.CreateUserResponseDTO;
 import org.example.requests.skelethon.enams.Endpoint;
-import org.example.requests.skelethon.enams.Role;
-import org.example.requests.skelethon.requests.ValidatedCrudRequest;
+import org.example.requests.skelethon.requests.CrudRequest;
 import org.example.specs.RequestSpecs;
 import org.example.specs.ResponceSpecs;
 import org.junit.jupiter.api.AfterEach;
@@ -20,33 +17,22 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.example.BankWidget.deleteUser;
 import static org.example.BankWidget.getAccountById;
 
 public class DepositTest {
     SoftAssertions softAssertions;
-    CreateUserRequestDTO userRequestDTO;
     CreateAccountResponseDTO userAccount;
+
+    CreateUserResponseDTO user;
 
     @BeforeEach
     public void precondition() {
         softAssertions = new SoftAssertions();
 
-        userRequestDTO = CreateUserRequestDTO.builder()
-                .username(RandomData.getRandomUserName())
-                .password(RandomData.getRandomPassword())
-                .role(Role.USER)
-                .build();
+        user = BankWidget.createUser();
 
-        new CrudRequest(
-                RequestSpecs.getAdminSpec(),
-                Endpoint.CREATE_USER,
-                ResponceSpecs.entityWasCreated())
-                .post(userRequestDTO);
-
-        userAccount = new ValidatedCrudRequest<CreateAccountResponseDTO>(RequestSpecs.getUserSpec(userRequestDTO.getUsername(), userRequestDTO.getPassword()),
-                Endpoint.CREATE_ACCOUNT,
-                ResponceSpecs.entityWasCreated())
-                .post(new CreateAccountRequestDTO());
+        userAccount = BankWidget.createAccount(user);
 
         softAssertions.assertThat(userAccount.getBalance()).as("Аккаунт создался с балансом != 0").isEqualTo(0.0);
         softAssertions.assertThat(userAccount.getTransactions().size()).as("Аккаунт создался с транзакцией").isEqualTo(0);
@@ -54,7 +40,7 @@ public class DepositTest {
 
     @AfterEach
     public void postcondition() {
-        //было бы круто удалять тестовые данные да...
+        deleteUser(user);
         softAssertions.assertAll();
     }
 
@@ -62,7 +48,7 @@ public class DepositTest {
     @ParameterizedTest
     public void testPositiveDeposit(Double amount) {
         new CrudRequest(
-                RequestSpecs.getUserSpec(userRequestDTO.getUsername(), userRequestDTO.getPassword()),
+                RequestSpecs.getUserSpec(user.getUsername(), user.getPassword()),
                 Endpoint.DEPOSIT,
                 ResponceSpecs.requestReturnsOk())
                 .post(new DepositRequestDTO(userAccount.getId(), amount));
@@ -78,7 +64,7 @@ public class DepositTest {
     public void testNegativeDeposit(Double amount) {
 
         new CrudRequest(
-                RequestSpecs.getUserSpec(userRequestDTO.getUsername(), userRequestDTO.getPassword()),
+                RequestSpecs.getUserSpec(user.getUsername(), user.getPassword()),
                 Endpoint.DEPOSIT,
                 ResponceSpecs.requestReturnsBadRequest())
                 .post(new DepositRequestDTO(userAccount.getId(), amount));

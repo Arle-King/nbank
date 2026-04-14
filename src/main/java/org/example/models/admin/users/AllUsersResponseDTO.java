@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.example.models.BaseModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Getter

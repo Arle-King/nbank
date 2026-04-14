@@ -27,8 +27,17 @@ public class CrudRequest extends HttpRequest implements CrudEndpointInterface {
     }
 
     @Override
-    public Object get(int id) {
-        return null;
+    public ValidatableResponse get(int... id) {
+        String url = endpoint.getEndpoint();
+        for (int i = 1; i < id.length + 1; i++) {
+            url = url.replace("id#" + i, String.valueOf(id[i - 1]));
+        }
+        return given()
+                .spec(requestSpecification)
+                .get(url)
+                .then()
+                .assertThat()
+                .spec(responseSpecification);
     }
 
 
@@ -43,12 +52,11 @@ public class CrudRequest extends HttpRequest implements CrudEndpointInterface {
     }
 
     @Override
-    public ValidatableResponse update(int id, BaseModel model) {
-        return null;
-    }
-
-    @Override
-    public Object update(BaseModel model) {
+    public ValidatableResponse update(BaseModel model, int... id) {
+        String url = endpoint.getEndpoint();
+        for (int i = 1; i < id.length + 1; i++) {
+            url = url.replace("id#" + i, String.valueOf(id[i - 1]));
+        }
         var body = model == null ? "" : model;
         return given()
                 .spec(requestSpecification)
@@ -60,7 +68,28 @@ public class CrudRequest extends HttpRequest implements CrudEndpointInterface {
     }
 
     @Override
-    public Object delete(int id) {
-        return null;
+    public ValidatableResponse update(BaseModel model) {
+        var body = model == null ? "" : model;
+        return given()
+                .spec(requestSpecification)
+                .body(body)
+                .put(endpoint.getEndpoint())
+                .then()
+                .assertThat()
+                .spec(responseSpecification);
+    }
+
+    @Override
+    public ValidatableResponse delete(int... id) {
+        String url = endpoint.getEndpoint();
+        for (int i = 1; i < id.length + 1; i++) {
+            url = url.replace("id#" + i, String.valueOf(id[i - 1]));
+        }
+        return given()
+                .spec(requestSpecification)
+                .delete(url)
+                .then()
+                .assertThat()
+                .spec(responseSpecification);
     }
 }

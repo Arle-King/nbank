@@ -1,27 +1,17 @@
 package org.example.models.customer.profile;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Data;
 import org.example.models.BaseModel;
-import org.example.models.accoints.accounts.AccountDTO;
+import org.example.models.admin.users.CreateUserResponseDTO;
 
-import java.util.List;
-
+@Data
 public class UpdateProfileResponseDTO extends BaseModel {
-    @SerializedName("id")
-    private int id;
 
-    @SerializedName("username")
-    private String username;
+    @SerializedName("customer")
+    private CreateUserResponseDTO user;
 
-    @SerializedName("password")
-    private String password;
+    @SerializedName("message")
+    private String message;
 
-    @SerializedName("name")
-    private String name;
-
-    @SerializedName("role")
-    private String role;
-
-    @SerializedName("accounts")
-    private List<AccountDTO> accounts;
 }
