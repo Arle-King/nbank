@@ -1,6 +1,5 @@
 package senior_autotest;
 
-import org.assertj.core.api.SoftAssertions;
 import org.example.BankWidget;
 import org.example.models.accoints.accounts.CreateAccountResponseDTO;
 import org.example.models.accoints.transfer.TransferRequestDTO;
@@ -22,17 +21,28 @@ import java.util.stream.Stream;
 
 import static org.example.BankWidget.getAccountById;
 
-public class TransferTest {
-    SoftAssertions softAssertions;
+public class TransferTest extends BaseTest{
 
     CreateUserResponseDTO user1;
     CreateUserResponseDTO user2;
     List<CreateAccountResponseDTO> userAccounts;
+    final static String errorKey = "transfer";
+    final static String errorValue = "Invalid transfer: insufficient funds or invalid accounts";
+
+    final static Integer beginUser1Accounts = 2;
+    final static Double beginUser1Balance1 = 0.0;
+    final static Integer beginUser1Account1Transactions = 0;
+
+    final static Double beginUser1Balance2 = 0.0;
+    final static Integer beginUser1Account2Transactions = 0;
+
+    final static Integer beginUser2Accounts = 1;
+    final static Double beginUser2Balance1 = 0.0;
+    final static Integer beginUser2Account1Transactions = 0;
 
     @BeforeEach
     public void precondition() {
-        softAssertions = new SoftAssertions();
-
+        super.precondition();
         user1 = BankWidget.createUser();
         user2 = BankWidget.createUser();
 
@@ -44,18 +54,18 @@ public class TransferTest {
         user1 = BankWidget.getUresById(user1.getId());
         user2 = BankWidget.getUresById(user2.getId());
 
-        softAssertions.assertThat(user1.getAccounts().size()).as("У user неверное кол-во account").isEqualTo(2);
-        softAssertions.assertThat(user1.getAccounts().get(0).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(0.0);
-        softAssertions.assertThat(user1.getAccounts().get(0).getTransactions().size()).as("Аккаунт создался с транзакцией").isEqualTo(0);
+        softAssertions.assertThat(user1.getAccounts().size()).as("У user неверное кол-во account").isEqualTo(beginUser1Accounts);
+        softAssertions.assertThat(user1.getAccounts().get(0).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(beginUser1Balance1);
+        softAssertions.assertThat(user1.getAccounts().get(0).getTransactions().size()).as("Аккаунт создался с транзакцией").isEqualTo(beginUser1Account1Transactions);
 
-        softAssertions.assertThat(user1.getAccounts().get(1).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(0.0);
-        softAssertions.assertThat(user1.getAccounts().get(1).getTransactions().size()).as("Аккаунт создался с транзакцией").isEqualTo(0);
+        softAssertions.assertThat(user1.getAccounts().get(1).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(beginUser1Balance2);
+        softAssertions.assertThat(user1.getAccounts().get(1).getTransactions().size()).as("Аккаунт создался с транзакцией").isEqualTo(beginUser1Account2Transactions);
 
 
 
-        softAssertions.assertThat(user2.getAccounts().size()).as("У user неверное кол-во account").isEqualTo(1);
-        softAssertions.assertThat(user2.getAccounts().get(0).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(0.0);
-        softAssertions.assertThat(user2.getAccounts().get(0).getTransactions().size()).as("Аккаунт создался с транзакцией").isEqualTo(0);
+        softAssertions.assertThat(user2.getAccounts().size()).as("У user неверное кол-во account").isEqualTo(beginUser2Accounts);
+        softAssertions.assertThat(user2.getAccounts().get(0).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(beginUser2Balance1);
+        softAssertions.assertThat(user2.getAccounts().get(0).getTransactions().size()).as("Аккаунт создался с транзакцией").isEqualTo(beginUser2Account1Transactions);
 
     }
 
@@ -63,7 +73,6 @@ public class TransferTest {
     public void postcondition() {
         BankWidget.deleteUser(user1);
         BankWidget.deleteUser(user2);
-        softAssertions.assertAll();
     }
 
     @ParameterizedTest
@@ -77,7 +86,7 @@ public class TransferTest {
                 .amount(amount)
                 .build();
 
-        int startCount = getAccountById(userAccounts.get(0).getId()).getTransactions().size();
+        int startCount = getAccountById(userAccounts.get(receiverAccountId).getId()).getTransactions().size();
 
         new CrudRequest(
                 RequestSpecs.getUserSpec(user1.getUsername(), user1.getPassword()),
@@ -86,16 +95,16 @@ public class TransferTest {
                 .post(transferRequestDTO);
 
         softAssertions.assertThat(getAccountById(userAccounts.get(0).getId()).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(balance - amount);
-        softAssertions.assertThat(getAccountById(userAccounts.get(0).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(startCount + 1);
+        softAssertions.assertThat(getAccountById(userAccounts.get(0).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(beginUser1Account1Transactions + 1);
 
 
         softAssertions.assertThat(getAccountById(userAccounts.get(receiverAccountId).getId()).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(amount);
-        softAssertions.assertThat(getAccountById(userAccounts.get(receiverAccountId).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(1);
+        softAssertions.assertThat(getAccountById(userAccounts.get(receiverAccountId).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(startCount + 1);
     }
 
     @ParameterizedTest
     @MethodSource("provaderNegativeTransfer")
-    public void negativeTransferTest(Double balance, int receiverAccountId, Double amount) {
+    public void negativeTransferTest(Double balance, int receiverAccountId, Double amount, String errorKey, String errorValue) {
         BankWidget.dodepInAccount(user1.getUsername(), user1.getPassword(), userAccounts.get(0).getId(), balance);
 
         TransferRequestDTO transferRequestDTO = TransferRequestDTO.builder()
@@ -104,20 +113,20 @@ public class TransferTest {
                 .amount(amount)
                 .build();
 
-        int startCount = getAccountById(userAccounts.get(0).getId()).getTransactions().size();
+        int startCount = getAccountById(userAccounts.get(receiverAccountId).getId()).getTransactions().size();
 
         new CrudRequest(
                 RequestSpecs.getUserSpec(user1.getUsername(), user1.getPassword()),
                 Endpoint.TRANSFER,
-                ResponceSpecs.requestReturnsBadRequest())
+                ResponceSpecs.requestReturnsBadRequest(errorKey, errorValue))
                 .post(transferRequestDTO);
 
         softAssertions.assertThat(getAccountById(userAccounts.get(0).getId()).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(balance);
         softAssertions.assertThat(getAccountById(userAccounts.get(0).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(startCount);
 
 
-        softAssertions.assertThat(getAccountById(userAccounts.get(receiverAccountId).getId()).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(0.0);
-        softAssertions.assertThat(getAccountById(userAccounts.get(receiverAccountId).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(0);
+        softAssertions.assertThat(getAccountById(userAccounts.get(receiverAccountId).getId()).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(beginUser1Balance2);
+        softAssertions.assertThat(getAccountById(userAccounts.get(receiverAccountId).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(startCount);
     }
 
     @Test
@@ -128,19 +137,17 @@ public class TransferTest {
         TransferRequestDTO transferRequestDTO = TransferRequestDTO.builder()
                 .senderAccountId(userAccounts.get(0).getId())
                 .receiverAccountId(0)
-                .amount(1500.0)
+                .amount(balance)
                 .build();
-
-        int startCount = getAccountById(userAccounts.get(0).getId()).getTransactions().size();
 
         new CrudRequest(
                 RequestSpecs.getUserSpec(user1.getUsername(), user1.getPassword()),
                 Endpoint.TRANSFER,
-                ResponceSpecs.requestReturnsBadRequest())
+                ResponceSpecs.requestReturnsBadRequest(errorKey, errorValue))
                 .post(transferRequestDTO);
 
         softAssertions.assertThat(getAccountById(userAccounts.get(0).getId()).getBalance()).as("Баланс не совпадает с ожидаемым").isEqualTo(balance);
-        softAssertions.assertThat(getAccountById(userAccounts.get(0).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(startCount);
+        softAssertions.assertThat(getAccountById(userAccounts.get(0).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(beginUser1Account1Transactions);
     }
 
     // 0 - основной счёт, 1 - доп счёт, 2 - чужой счёт
@@ -153,10 +160,10 @@ public class TransferTest {
 
     public static Stream<Arguments> provaderNegativeTransfer() {
         return Stream.of(
-                Arguments.of( 100.0, 1, 0.0), // перевод 0 денег
-                Arguments.of( 1000.0, 1, -100.0), // перевод отрицательного кол-ва денег
-                Arguments.of( 10100.0, 1, 10050.0), // выход за пределы допустимого перевода
-                Arguments.of( 4000.0, 1, 4500.0) // перевод без необходимой суммы на счету
+                Arguments.of( 100.0, 1, 0.0, "transfer", "Transfer amount must be at least 0.01"), // перевод 0 денег
+                Arguments.of( 1000.0, 1, -100.0, "transfer", "Transfer amount must be at least 0.01"), // перевод отрицательного кол-ва денег
+                Arguments.of( 10100.0, 1, 10050.0, "transfer", "Transfer amount must be at least 0.01"), // выход за пределы допустимого перевода
+                Arguments.of( 4000.0, 1, 4500.0, "transfer", "Transfer amount must be at least 0.01") // перевод без необходимой суммы на счету
         );
     }
 }

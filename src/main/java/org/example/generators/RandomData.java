@@ -2,6 +2,7 @@ package org.example.generators;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+@Deprecated
 public class RandomData {
     private RandomData() {};
 

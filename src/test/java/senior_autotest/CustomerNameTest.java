@@ -1,6 +1,5 @@
 package senior_autotest;
 
-import org.assertj.core.api.SoftAssertions;
 import org.example.BankWidget;
 import org.example.generators.RandomModelGenerator;
 import org.example.models.admin.users.CreateUserResponseDTO;
@@ -21,24 +20,22 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-public class CustomerNameTest {
-    SoftAssertions softAssertions;
-
+public class CustomerNameTest extends BaseTest{
     CreateUserResponseDTO user;
+
+    final static String beginName = null;
 
     @BeforeEach
     public void precondition() {
-        softAssertions = new SoftAssertions();
-
+        super.precondition();
         user = BankWidget.createUser();
 
-        softAssertions.assertThat(user.getName()).as("Name не соответствует ожидаемому").isEqualTo(null);
+        softAssertions.assertThat(user.getName()).as("Name не соответствует ожидаемому").isEqualTo(beginName);
     }
 
     @AfterEach
     public void postcondition() {
         BankWidget.deleteUser(user);
-        softAssertions.assertAll();
     }
 
     @Test
@@ -56,7 +53,7 @@ public class CustomerNameTest {
 
     @MethodSource("provaderNegativeCutomerName")
     @ParameterizedTest
-    public void negativeTest(String newName) {
+    public void negativeTest(String newName, String errorKey, String errorValue) {
         UpdateProfileRequestDTO updateProfileRequestDTO = UpdateProfileRequestDTO.builder()
                 .name(newName)
                 .build();
@@ -64,7 +61,7 @@ public class CustomerNameTest {
         new CrudRequest(
                 RequestSpecs.getUserSpec(user.getUsername(), user.getPassword()),
                 Endpoint.UPDATE_PROFILE,
-                ResponceSpecs.requestReturnsBadRequest())
+                ResponceSpecs.requestReturnsBadRequest(errorKey, errorValue))
                 .update(updateProfileRequestDTO);
 
         softAssertions.assertThat(BankWidget.getUresById(user.getId()).getName()).as("Name не соответствует ожидаемому").isEqualTo(user.getName());
@@ -72,12 +69,12 @@ public class CustomerNameTest {
 
     public static Stream<Arguments> provaderNegativeCutomerName() {
         return Stream.of(
-                Arguments.of( "   ", 422),
-                Arguments.of( "", 422),
-                Arguments.of("New", 422),
-                Arguments.of("New New Name", 422),
-                Arguments.of("New Name!", 422),
-                Arguments.of("New Name123", 422)
+                Arguments.of( "   ", 422, "name", "Name must contain two words with letters only"),
+                Arguments.of( "", 422, "name", "Name must contain two words with letters only"),
+                Arguments.of("New", 422, "name", "Name must contain two words with letters only"),
+                Arguments.of("New New Name", 422, "name", "Name must contain two words with letters only"),
+                Arguments.of("New Name!", 422, "name", "Name must contain two words with letters only"),
+                Arguments.of("New Name123", 422, "name", "Name must contain two words with letters only")
         );
     }
 }

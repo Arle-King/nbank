@@ -1,5 +1,6 @@
 package org.example;
 
+import io.restassured.common.mapper.TypeRef;
 import org.example.generators.RandomModelGenerator;
 import org.example.models.accoints.accounts.AccountDTO;
 import org.example.models.accoints.accounts.CreateAccountRequestDTO;
@@ -24,8 +25,7 @@ public class BankWidget {
                 ResponceSpecs.requestReturnsOk())
                 .get()
                 .extract()
-                .jsonPath()
-                .getList("", CreateUserResponseDTO.class);
+                .as(new TypeRef<List<CreateUserResponseDTO>>() {});
     }
 
 
