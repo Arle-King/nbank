@@ -1,0 +1,23 @@
+// Status: 201, time: 77ms, size: 63 B
+### Create account user1
+POST http://localhost:4111/api/v1/accounts HTTP/1.1
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+content-type: application/json
+date: Sat, 04 Apr 2026 19:11:31 GMT
+expires: 0
+pragma: no-cache
+transfer-encoding: chunked
+vary: Origin
+vary: Access-Control-Request-Method
+vary: Access-Control-Request-Headers
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+
+{
+  "id": 1,
+  "accountNumber": "ACC1",
+  "balance": 0.0,
+  "transactions": []
+}
+>> C:\Users\leps-\IdeaProjects\nbank\.idea\httpClient\04-04\Create account user1\2026-04-04T221131.json

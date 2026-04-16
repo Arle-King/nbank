@@ -1,0 +1,6 @@
+// Size: 0 B
+### Get all users
+GET http://localhost:4111/api/v1/admin/users HTTP/1.1
+Authorization: Basic YWRtaW46YWRtaW4=
+Content-Length: 0
+

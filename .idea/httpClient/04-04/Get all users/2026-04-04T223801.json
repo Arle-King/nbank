@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "username": "user1",
+    "password": "$2a$10$aJV/XEkLgboT077gLIKADu9JD2IvZ1HeT7Bac86fQIY8N6xC9dKvK",
+    "name": null,
+    "role": "USER",
+    "accounts": [
+      {
+        "id": 1,
+        "accountNumber": "ACC1",
+        "balance": 0.0,
+        "transactions": []
+      }
+    ]
+  }
+]

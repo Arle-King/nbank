@@ -1,0 +1,11 @@
+// Size: 31 B
+### позитивный тест на пополнение от 0 и до 5001
+POST http://localhost:4111/api/v1/accounts/deposit HTTP/1.1
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+Content-Type: application/json
+Content-Length: 31
+
+{
+  "id": 1,
+  "balance": 100
+}

@@ -1,0 +1,29 @@
+###
+// Admin Token: authorization: Basic YWRtaW46YWRtaW4=
+POST http://localhost:4111/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+### Get user1 token
+//authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+POST http://localhost:4111/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "Password#1"
+}
+
+### Get user2 token
+//authorization: Basic dXNlcjI6UGFzc3dvcmQjMg==
+POST http://localhost:4111/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "user2",
+  "password": "Password#2"
+}
