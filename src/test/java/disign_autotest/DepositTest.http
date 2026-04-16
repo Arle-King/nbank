@@ -59,3 +59,33 @@ Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
   "id": 0,
   "balance": 100
 }
+
+### позитивный тест на пополнение 4999.99
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "id": 1,
+  "balance": 4999.99
+}
+
+### позитивный тест на пополнение 0.01
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "id": 1,
+  "balance": 0.01
+}
+
+### негативный тест на пополнение 5000.01
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "id": 1,
+  "balance": 5000.01
+}
