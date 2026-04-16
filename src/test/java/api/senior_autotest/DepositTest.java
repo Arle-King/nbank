@@ -1,4 +1,4 @@
-package senior_autotest;
+package api.senior_autotest;
 
 import org.example.BankWidget;
 import org.example.models.accoints.accounts.CreateAccountResponseDTO;
