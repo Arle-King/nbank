@@ -1,0 +1,7 @@
+### Create account user1
+POST http://localhost:4111/api/v1/accounts
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+### Create account user2
+POST http://localhost:4111/api/v1/accounts
+Authorization: Basic dXNlcjI6UGFzc3dvcmQjMg==

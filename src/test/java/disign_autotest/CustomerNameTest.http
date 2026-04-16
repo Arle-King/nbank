@@ -1,0 +1,63 @@
+
+### позитивный тест 2 норм слова
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "name": "New Name"
+}
+
+### негативный тест на 3 пробела (ну пробелы разделённые пробелом)
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "name": "   "
+}
+
+### негативный тест 0 слов
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "name": ""
+}
+
+### негативный тест 1 словo
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "name": "New"
+}
+
+### негативный тест 3 слова
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "name": "New New Name"
+}
+
+### негативный тест на спецсимвол
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "name": "New Name!"
+}
+
+### негативный тест на число
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic dXNlcjE6UGFzc3dvcmQjMQ==
+
+{
+  "name": "New Name123"
+}
