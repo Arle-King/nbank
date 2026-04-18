@@ -69,6 +69,14 @@ public class BankWidget {
         } while (amount > 0);
     }
 
+    public static CreateUserResponseDTO getUserByUsername(String username) {
+        return getAllUsers().stream()
+                .filter(userN -> userN.getUsername().equals(username))
+                .findFirst()
+                .orElse(null);
+
+    }
+
     public static void deleteUser(CreateUserResponseDTO user) {
         deleteAllUserAccounts(user);
         new CrudRequest(
@@ -76,6 +84,21 @@ public class BankWidget {
                 Endpoint.DELETE_USER,
                 ResponceSpecs.requestReturnsOk())
                 .delete(user.getId());
+    }
+
+    public static void deleteUser(String username) {
+        CreateUserResponseDTO user = getAllUsers().stream().filter(userN -> userN.getUsername().equals(username)).findFirst().orElse(null);
+        assert user != null;
+        deleteAllUserAccounts(user);
+        new CrudRequest(
+                RequestSpecs.getAdminSpec(),
+                Endpoint.DELETE_USER,
+                ResponceSpecs.requestReturnsOk())
+                .delete(user.getId());
+    }
+
+    public static String getCustomName(String username) {
+        return getUserByUsername(username).getName();
     }
 
     public static void deleteAccount(CreateUserResponseDTO user, int accountId) {
