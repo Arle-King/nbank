@@ -1,13 +1,14 @@
 package api.senior_autotest;
 
+import api.BaseTest;
 import org.example.BankWidget;
-import org.example.models.accoints.accounts.CreateAccountResponseDTO;
-import org.example.models.accoints.deposit.DepositRequestDTO;
-import org.example.models.admin.users.CreateUserResponseDTO;
-import org.example.requests.skelethon.enams.Endpoint;
-import org.example.requests.skelethon.requests.CrudRequest;
-import org.example.specs.RequestSpecs;
-import org.example.specs.ResponceSpecs;
+import org.example.api.models.accoints.accounts.CreateAccountResponseDTO;
+import org.example.api.models.accoints.deposit.DepositRequestDTO;
+import org.example.api.models.admin.users.CreateUserResponseDTO;
+import org.example.api.skelethon.enams.Endpoint;
+import org.example.api.skelethon.requests.CrudRequest;
+import org.example.api.specs.RequestSpecs;
+import org.example.api.specs.ResponceSpecs;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +20,7 @@ import java.util.stream.Stream;
 import static org.example.BankWidget.deleteUser;
 import static org.example.BankWidget.getAccountById;
 
-public class DepositTest extends BaseTest{
+public class DepositTest extends BaseTest {
     CreateAccountResponseDTO userAccount;
 
     CreateUserResponseDTO user;

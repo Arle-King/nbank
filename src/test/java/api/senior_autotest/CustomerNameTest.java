@@ -1,16 +1,17 @@
 package api.senior_autotest;
 
+import api.BaseTest;
 import org.example.BankWidget;
-import org.example.generators.RandomModelGenerator;
-import org.example.models.admin.users.CreateUserResponseDTO;
-import org.example.models.comparison.ModelAssertions;
-import org.example.models.customer.profile.UpdateProfileRequestDTO;
-import org.example.models.customer.profile.UpdateProfileResponseDTO;
-import org.example.requests.skelethon.enams.Endpoint;
-import org.example.requests.skelethon.requests.CrudRequest;
-import org.example.requests.skelethon.requests.ValidatedCrudRequest;
-import org.example.specs.RequestSpecs;
-import org.example.specs.ResponceSpecs;
+import org.example.api.generators.RandomModelGenerator;
+import org.example.api.models.admin.users.CreateUserResponseDTO;
+import org.example.api.models.comparison.ModelAssertions;
+import org.example.api.models.customer.profile.UpdateProfileRequestDTO;
+import org.example.api.models.customer.profile.UpdateProfileResponseDTO;
+import org.example.api.skelethon.enams.Endpoint;
+import org.example.api.skelethon.requests.CrudRequest;
+import org.example.api.skelethon.requests.ValidatedCrudRequest;
+import org.example.api.specs.RequestSpecs;
+import org.example.api.specs.ResponceSpecs;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-public class CustomerNameTest extends BaseTest{
+public class CustomerNameTest extends BaseTest {
     CreateUserResponseDTO user;
 
     final static String beginName = null;

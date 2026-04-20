@@ -1,18 +1,18 @@
 package org.example;
 
 import io.restassured.common.mapper.TypeRef;
-import org.example.generators.RandomModelGenerator;
-import org.example.models.accoints.accounts.AccountDTO;
-import org.example.models.accoints.accounts.CreateAccountRequestDTO;
-import org.example.models.accoints.accounts.CreateAccountResponseDTO;
-import org.example.models.accoints.deposit.DepositRequestDTO;
-import org.example.models.admin.users.CreateUserRequestDTO;
-import org.example.models.admin.users.CreateUserResponseDTO;
-import org.example.requests.skelethon.enams.Endpoint;
-import org.example.requests.skelethon.requests.CrudRequest;
-import org.example.requests.skelethon.requests.ValidatedCrudRequest;
-import org.example.specs.RequestSpecs;
-import org.example.specs.ResponceSpecs;
+import org.example.api.generators.RandomModelGenerator;
+import org.example.api.models.accoints.accounts.AccountDTO;
+import org.example.api.models.accoints.accounts.CreateAccountRequestDTO;
+import org.example.api.models.accoints.accounts.CreateAccountResponseDTO;
+import org.example.api.models.accoints.deposit.DepositRequestDTO;
+import org.example.api.models.admin.users.CreateUserRequestDTO;
+import org.example.api.models.admin.users.CreateUserResponseDTO;
+import org.example.api.skelethon.enams.Endpoint;
+import org.example.api.skelethon.requests.CrudRequest;
+import org.example.api.skelethon.requests.ValidatedCrudRequest;
+import org.example.api.specs.RequestSpecs;
+import org.example.api.specs.ResponceSpecs;
 
 import java.util.List;
 
