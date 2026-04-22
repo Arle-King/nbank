@@ -10,15 +10,13 @@ import org.example.ui.pages.DeshboardPage;
 import org.junit.jupiter.api.Test;
 import ui.BaseUITest;
 
-import java.util.List;
-
 import static org.example.BankWidget.getAccountById;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DepositUITest extends BaseUITest {
 
-    List<CreateAccountResponseDTO> userAccount;
+    CreateAccountResponseDTO userAccount;
 
     Double banalce = Math.random() * 1000 / 10;
 
@@ -26,17 +24,17 @@ public class DepositUITest extends BaseUITest {
     @UserSession
     public void testPositiveDeposit() {
 
-        userAccount = SessionStorage.getSteps().createAccount();
+        userAccount = SessionStorage.getSteps().createAccount().get(0);
 
         DeshboardPage page = new DepositPage()
                 .open()
-                .deposit(userAccount.get(0).getAccountNumber(), banalce)
-                .checkAlertMassageAndAccept(BankAlert.DEPOSIT_SUCCESS, banalce, userAccount.get(0).getAccountNumber())
+                .deposit(userAccount.getAccountNumber(), banalce)
+                .checkAlertMassageAndAccept(BankAlert.DEPOSIT_SUCCESS, banalce, userAccount.getAccountNumber())
                 .getPage(DeshboardPage.class);
 
         page.getDashboard().shouldBe(Condition.visible);
 
-        assertEquals(getAccountById(userAccount.get(0).getId()).getBalance(), banalce);
+        assertEquals(getAccountById(userAccount.getId()).getBalance(), banalce);
     }
 
     @Test
@@ -44,16 +42,16 @@ public class DepositUITest extends BaseUITest {
     public void testNegativeDeposit() {
         banalce+= 5000;
 
-        userAccount = SessionStorage.getSteps().createAccount();
+        userAccount = SessionStorage.getSteps().createAccount().get(0);
 
         DepositPage page = new DepositPage()
                 .open()
-                .deposit(userAccount.get(0).getAccountNumber(), banalce)
+                .deposit(userAccount.getAccountNumber(), banalce)
                 .checkAlertMassageAndAccept(BankAlert.DEPOSIT_LESS_5000);
 
-        assertTrue(page.getSelectAccount().getSelectedOptionText().contains(userAccount.get(0).getAccountNumber()));
+        assertTrue(page.getSelectAccount().getSelectedOptionText().contains(userAccount.getAccountNumber()));
         assertEquals(page.getEnterAmount().getValue(), banalce.toString());
 
-        assertEquals(getAccountById(userAccount.get(0).getId()).getBalance(), userAccount.get(0).getBalance());
+        assertEquals(getAccountById(userAccount.getId()).getBalance(), userAccount.getBalance());
     }
 }

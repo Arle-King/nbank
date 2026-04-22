@@ -62,7 +62,7 @@ public class TransferUITest extends BaseUITest {
         DeshboardPage page = new TransferPage()
                 .open()
                 .transfer(userAccount1, user, userAccount2, positiveTransfer)
-                .checkAlertMassageAndAccept(BankAlert.MAKE_A_TRANSFER_ERROR, positiveTransfer, userAccount2)
+                .checkAlertMassageAndAccept(BankAlert.MAKE_A_TRANSFER_SUCCESS, positiveTransfer, userAccount2.getAccountNumber())
                 .getPage(DeshboardPage.class);
 
         page.getDashboard().shouldBe(Condition.visible);
@@ -76,7 +76,7 @@ public class TransferUITest extends BaseUITest {
         TransferPage page = new TransferPage()
                 .open()
                 .transfer(userAccount1, user, userAccount2, negativeTransfer)
-                .checkAlertMassageAndAccept(BankAlert.MAKE_A_TRANSFER_SUCCESS);
+                .checkAlertMassageAndAccept(BankAlert.MAKE_A_TRANSFER_ERROR);
 
 
         page.getTransferWelcomeText().shouldBe(Condition.visible);
