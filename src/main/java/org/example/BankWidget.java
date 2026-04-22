@@ -140,4 +140,8 @@ public class BankWidget {
     public static CreateAccountResponseDTO createAccount(CreateUserResponseDTO user) {
         return createAccount(user.getUsername(), user.getPassword());
     }
+
+    public static CreateUserRequestDTO getAdmin() {
+        return CreateUserRequestDTO.builder().username("admin").password("admin").build();
+    }
 }

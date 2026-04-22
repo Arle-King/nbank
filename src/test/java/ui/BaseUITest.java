@@ -6,12 +6,16 @@ import com.codeborne.selenide.Selenide;
 import org.example.api.configs.Config;
 import org.example.api.models.admin.users.CreateUserRequestDTO;
 import org.example.api.specs.RequestSpecs;
+import org.example.common.extensions.AdminSessionExtension;
+import org.example.common.extensions.UserSessionExtension;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.executeJavaScript;
 
+@ExtendWith({AdminSessionExtension.class, UserSessionExtension.class})
 public class BaseUITest extends BaseTest {
     @BeforeAll
     public static void setupSelenoid() {
