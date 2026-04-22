@@ -29,9 +29,9 @@ public class TransferUITest extends BaseUITest {
     CreateAccountResponseDTO userAccount2;
 
 
-    Double amount = 4000.0;
-    Double positiveTransfer = 3000.0;
-    Double negativeTransfer = 5000.0;
+    Double amount = Math.random() * 9999 + 1;
+    Double positiveTransfer = amount * 0.9;
+    Double negativeTransfer = amount * 1.1;
 
     @BeforeEach
     public void precondition() {
