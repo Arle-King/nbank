@@ -42,6 +42,7 @@ public class CustomerNameUITest {
     String xpathSaveButton = "//button[contains(text(), 'Save Changes')]";
 
     String newName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName();
+    final String welcomeText = "Welcome, " + newName + "!";
 
     Alert alert;
 
@@ -67,7 +68,7 @@ public class CustomerNameUITest {
                 ResponceSpecs.entityWasCreated())
                 .post(user)
                 .extract()
-                .header("Authorization");
+                .header(ResponceSpecs.AUTH_HEADER);
 
         Selenide.open(loginEndpoint);
 
@@ -95,7 +96,7 @@ public class CustomerNameUITest {
         assertEquals(baseUrl + deshboardEndpoint, WebDriverRunner.url());
         $(By.xpath(xpathDashboard)).shouldBe(Condition.visible);
 
-        assertEquals($(By.xpath(xpathWelcomeText)).getText(), "Welcome, " + newName + "!");
+        assertEquals($(By.xpath(xpathWelcomeText)).getText(), welcomeText);
         assertEquals($(By.xpath(xpathUsername)).getText(), newName);
 
         assertEquals(getUserByUsername(user.getUsername()).getName(), newName);
