@@ -14,7 +14,7 @@ public class CustomerNamePage extends BasePage<CustomerNamePage>{
     String xpathEditProfile = "//*[contains(text(), 'Edit Profile')]";
 
     SelenideElement fieldEditNewName = $(By.xpath(xpathFieldEditNewName));
-    SelenideElement selenideElement = $(By.xpath(xpathSaveButton));
+    SelenideElement saveButton = $(By.xpath(xpathSaveButton));
     SelenideElement editProfile = $(By.xpath(xpathEditProfile));
 
     @Override
@@ -23,8 +23,12 @@ public class CustomerNamePage extends BasePage<CustomerNamePage>{
     }
 
     public CustomerNamePage editName(String newName) {
-        fieldEditNewName.sendKeys(newName);
-        selenideElement.click();
+        int counter = 0;
+        do {
+            fieldEditNewName.setValue(newName);
+            counter++;
+        } while (fieldEditNewName.getText().isEmpty() && counter < 10);
+        saveButton.click();
         return this;
     }
 }

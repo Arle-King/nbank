@@ -13,6 +13,7 @@ import ui.BaseUITest;
 
 import java.util.List;
 
+import static com.codeborne.selenide.Condition.empty;
 import static org.example.BankWidget.dodepInAccount;
 import static org.example.BankWidget.getAccountById;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,7 +69,7 @@ public class TransferUITest extends BaseUITest {
         page.getTransferWelcomeText().shouldBe(Condition.visible);
 
         //Выводить всю страницу в элемент большого смысла не вижу. 100/100 будут более важные задачи
-        assertTrue(page.getSelectAccount().getSelectedOptionText().contains(amount.toString()));
+        assertTrue(page.getSelectAccount().shouldNotHave(empty).getSelectedOptionText().contains(userAccounts.get(0).getAccountNumber()), "Ожидали");
         assertEquals(page.getRecipientName().getValue(), user.getUsername());
         assertEquals(page.getReicpientAccountNumber().getValue(), userAccounts.get(1).getAccountNumber());
         assertEquals(page.getAmount().getValue(), negativeTransfer.toString());

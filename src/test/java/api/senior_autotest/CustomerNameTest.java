@@ -70,12 +70,12 @@ public class CustomerNameTest extends BaseTest {
 
     public static Stream<Arguments> provaderNegativeCutomerName() {
         return Stream.of(
-                Arguments.of( "   ", 422, "name", "Name must contain two words with letters only"),
-                Arguments.of( "", 422, "name", "Name must contain two words with letters only"),
-                Arguments.of("New", 422, "name", "Name must contain two words with letters only"),
-                Arguments.of("New New Name", 422, "name", "Name must contain two words with letters only"),
-                Arguments.of("New Name!", 422, "name", "Name must contain two words with letters only"),
-                Arguments.of("New Name123", 422, "name", "Name must contain two words with letters only")
+                Arguments.of( "   ", "name", "Name must contain two words with letters only"),
+                Arguments.of( "", "name", "Name must contain two words with letters only"),
+                Arguments.of("New", "name", "Name must contain two words with letters only"),
+                Arguments.of("New New Name", "name", "Name must contain two words with letters only"),
+                Arguments.of("New Name!", "name", "Name must contain two words with letters only"),
+                Arguments.of("New Name123", "name", "Name must contain two words with letters only")
         );
     }
 }

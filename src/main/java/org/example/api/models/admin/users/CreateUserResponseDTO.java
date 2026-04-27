@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.example.api.models.BaseModel;
 import org.example.api.models.accoints.accounts.AccountDTO;
 import org.example.api.skelethon.enams.Role;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class CreateUserResponseDTO extends BaseModel {
     private String password;
 
     @SerializedName("name")
+    @Nullable
     private String name;
 
     @SerializedName("role")

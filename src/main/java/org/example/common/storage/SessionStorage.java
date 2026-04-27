@@ -1,6 +1,5 @@
 package org.example.common.storage;
 
-import org.example.BankWidget;
 import org.example.api.models.admin.users.CreateUserRequestDTO;
 import org.example.api.skelethon.requests.steps.AdminSteps;
 import org.example.api.skelethon.requests.steps.UserSteps;
@@ -10,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class SessionStorage {
-    private static final SessionStorage INSTANCE = new SessionStorage();
+    private static final ThreadLocal<SessionStorage> INSTANCE = ThreadLocal.withInitial(SessionStorage::new);
 
     private final LinkedHashMap<CreateUserRequestDTO, UserSteps> userStepsMap = new LinkedHashMap<>();
 
@@ -18,12 +17,12 @@ public class SessionStorage {
 
     public static void addUsers(List<CreateUserRequestDTO> users) {
         for (CreateUserRequestDTO user : users) {
-            INSTANCE.userStepsMap.put(user, new UserSteps(user.getUsername(), user.getPassword()));
+            INSTANCE.get().userStepsMap.put(user, new UserSteps(user.getUsername(), user.getPassword()));
         }
     }
 
     public static CreateUserRequestDTO getUser(int numder) {
-        return new ArrayList<>(INSTANCE.userStepsMap.keySet()).get(numder - 1);
+        return new ArrayList<>(INSTANCE.get().userStepsMap.keySet()).get(numder - 1);
     }
 
     public static CreateUserRequestDTO getUser() {
@@ -31,7 +30,7 @@ public class SessionStorage {
     }
 
     public static UserSteps getSteps(int numder) {
-        return new ArrayList<>(INSTANCE.userStepsMap.values()).get(numder - 1);
+        return new ArrayList<>(INSTANCE.get().userStepsMap.values()).get(numder - 1);
     }
 
     public static UserSteps getSteps() {
@@ -39,11 +38,11 @@ public class SessionStorage {
     }
 
     public static void clear() {
-        INSTANCE.userStepsMap.clear();
+        INSTANCE.get().userStepsMap.clear();
     }
 
     public static void deleteAllUsers() {
-        for(CreateUserRequestDTO user : INSTANCE.userStepsMap.keySet()) {
+        for(CreateUserRequestDTO user : INSTANCE.get().userStepsMap.keySet()) {
             AdminSteps.deleteUser(user);
         }
     }

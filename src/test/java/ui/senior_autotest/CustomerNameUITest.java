@@ -12,6 +12,7 @@ import org.example.ui.pages.DeshboardPage;
 import org.junit.jupiter.api.Test;
 import ui.BaseUITest;
 
+import static com.codeborne.selenide.Condition.empty;
 import static org.example.BankWidget.getUserByUsername;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -43,8 +44,10 @@ public class CustomerNameUITest extends BaseUITest {
 
     @Test
     @UserSession
-    public void testegativeCustomerName() {
+    public void testNegativeCustomerName() {
         newName = newName + "!";
+
+        user = SessionStorage.getUser();
 
         CustomerNamePage page = new CustomerNamePage()
                 .open()
@@ -52,7 +55,7 @@ public class CustomerNameUITest extends BaseUITest {
                 .checkAlertMassageAndAccept(BankAlert.CUSTOM_NAME_ERROR);
 
         page.getEditProfile().shouldBe(Condition.visible);
-        assertEquals(page.getFieldEditNewName().getValue(), newName);
+        assertEquals(page.getFieldEditNewName().shouldNotHave(empty).getValue(), newName);
 
         assertNotEquals(getUserByUsername(user.getUsername()).getName(), newName);
     }
