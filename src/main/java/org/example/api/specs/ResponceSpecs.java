@@ -7,6 +7,8 @@ import org.hamcrest.Matchers;
 
 public class ResponceSpecs {
 
+    public static final String AUTH_HEADER = "Authorization";
+
     private static ResponseSpecBuilder defaultResponseBuilder() {
         return new ResponseSpecBuilder();
     }

@@ -72,7 +72,7 @@ public class DepositUITest {
                 ResponceSpecs.entityWasCreated())
                 .post(user)
                 .extract()
-                .header("Authorization");
+                .header(ResponceSpecs.AUTH_HEADER);
 
         userAccount = BankWidget.createAccount(user.getUsername(), user.getPassword());
 

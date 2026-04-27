@@ -31,19 +31,19 @@ public class RequestSpecs {
 
     public static RequestSpecification getAdminSpec() {
         return defaultRequestSpecification()
-                .addHeader("Authorization", "Basic YWRtaW46YWRtaW4=")
+                .addHeader(ResponceSpecs.AUTH_HEADER, "Basic YWRtaW46YWRtaW4=")
                 .build();
     }
 
     public static RequestSpecification getTokenSpec(String token) {
         return defaultRequestSpecification()
-                .addHeader("Authorization", token)
+                .addHeader(ResponceSpecs.AUTH_HEADER, token)
                 .build();
     }
 
     public static RequestSpecification getUserSpec(String username, String password) {
         return defaultRequestSpecification()
-                .addHeader("Authorization", getAuthUserToken(username, password))
+                .addHeader(ResponceSpecs.AUTH_HEADER, getAuthUserToken(username, password))
                 .build();
     }
 
@@ -56,7 +56,7 @@ public class RequestSpecs {
                     ResponceSpecs.requestReturnsOk())
                     .post(LoginRequestDTO.builder().username(username).password(password).build())
                     .extract()
-                    .header("Authorization");
+                    .header(ResponceSpecs.AUTH_HEADER);
             token.put(username, userToken);
         } else {
             userToken = token.get(username);

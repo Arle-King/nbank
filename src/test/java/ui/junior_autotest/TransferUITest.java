@@ -78,7 +78,7 @@ public class TransferUITest {
                 ResponceSpecs.entityWasCreated())
                 .post(user)
                 .extract()
-                .header("Authorization");
+                .header(ResponceSpecs.AUTH_HEADER);
 
         userAccount1 = BankWidget.createAccount(user.getUsername(), user.getPassword());
         userAccount2 = BankWidget.createAccount(user.getUsername(), user.getPassword());
