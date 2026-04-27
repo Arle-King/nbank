@@ -23,12 +23,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CustomerNameUITest extends BaseUITest {
 
     CreateUserRequestDTO user;
-    String newName;
-
+    String newName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName();
+    final String welcomeText = "Welcome, " + newName + "!";
 
     @BeforeEach
     public void precondition() {
-        newName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName();
         user = RandomModelGenerator.generate(CreateUserRequestDTO.class);
 
         new CrudRequest(RequestSpecs.getAdminSpec(),
@@ -36,7 +35,7 @@ public class CustomerNameUITest extends BaseUITest {
                 ResponceSpecs.entityWasCreated())
                 .post(user)
                 .extract()
-                .header("Authorization");
+                .header(ResponceSpecs.AUTH_HEADER);
 
         authAsUser(user);
     }
@@ -56,7 +55,7 @@ public class CustomerNameUITest extends BaseUITest {
 
         page.getDashboard().shouldBe(Condition.visible);
 
-        assertEquals(page.getWelcomeText().getText(), "Welcome, " + newName + "!");
+        assertEquals(page.getWelcomeText().getText(), welcomeText);
         assertEquals(page.getUsername().getText(), newName);
 
         assertEquals(getUserByUsername(user.getUsername()).getName(), newName);
