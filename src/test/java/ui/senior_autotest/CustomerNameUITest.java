@@ -19,7 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class CustomerNameUITest extends BaseUITest {
 
     CreateUserRequestDTO user;
-    String newName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName();;
+    final String newName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName();
+    final String welcomeText = "Welcome, " + newName + "!";
+    final String newErrorName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName() + "!";
 
     @Test
     @UserSession
@@ -35,7 +37,7 @@ public class CustomerNameUITest extends BaseUITest {
 
         page.getDashboard().shouldBe(Condition.visible);
 
-        assertEquals(page.getWelcomeText().getText(), "Welcome, " + newName + "!");
+        assertEquals(page.getWelcomeText().getText(), welcomeText);
         assertEquals(page.getUsername().getText(), newName);
 
         assertEquals(getUserByUsername(user.getUsername()).getName(), newName);
@@ -44,15 +46,13 @@ public class CustomerNameUITest extends BaseUITest {
     @Test
     @UserSession
     public void testegativeCustomerName() {
-        newName = newName + "!";
-
         CustomerNamePage page = new CustomerNamePage()
                 .open()
-                .editName(newName)
+                .editName(newErrorName)
                 .checkAlertMassageAndAccept(BankAlert.CUSTOM_NAME_ERROR);
 
         page.getEditProfile().shouldBe(Condition.visible);
-        assertEquals(page.getFieldEditNewName().getValue(), newName);
+        assertEquals(page.getFieldEditNewName().getValue(), newErrorName);
 
         assertNotEquals(getUserByUsername(user.getUsername()).getName(), newName);
     }
