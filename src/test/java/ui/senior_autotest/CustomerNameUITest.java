@@ -1,6 +1,7 @@
 package ui.senior_autotest;
 
 import com.codeborne.selenide.Condition;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.example.api.generators.RandomModelGenerator;
 import org.example.api.models.admin.users.CreateUserRequestDTO;
 import org.example.api.models.customer.profile.UpdateProfileRequestDTO;
@@ -21,7 +22,7 @@ public class CustomerNameUITest extends BaseUITest {
     CreateUserRequestDTO user;
     final String newName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName();
     final String welcomeText = "Welcome, " + newName + "!";
-    final String newErrorName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName() + "!";
+    final String newErrorName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName() + RandomStringUtils.random(1, "!@#$%^&*1234567890");
 
     @Test
     @UserSession
