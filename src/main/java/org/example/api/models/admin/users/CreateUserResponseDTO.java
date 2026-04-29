@@ -1,5 +1,6 @@
 package org.example.api.models.admin.users;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.Getter;
@@ -13,22 +14,22 @@ import java.util.List;
 @Getter
 public class CreateUserResponseDTO extends BaseModel {
 
-    @SerializedName("id")
+    @JsonProperty("id")
     private int id;
 
-    @SerializedName("username")
+    @JsonProperty("username")
     private String username;
 
-    @SerializedName("password")
+    @JsonProperty("password")
     private String password;
 
-    @SerializedName("name")
+    @JsonProperty("name")
     private String name;
 
-    @SerializedName("role")
+    @JsonProperty("role")
     private Role role;
 
-    @SerializedName("accounts")
+    @JsonProperty("accounts")
     private List<AccountDTO> accounts;
 
     private transient String token;

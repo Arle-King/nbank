@@ -2,12 +2,13 @@ package org.example.api.models.accoints.accounts;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
+import org.example.api.models.BaseModel;
 import org.example.api.models.accoints.transactions.TransactionDTO;
 
 import java.util.List;
 
 @Getter
-public class AccountDTO {
+public class AccountDTO extends BaseModel {
     @SerializedName("id")
     private int id;
 

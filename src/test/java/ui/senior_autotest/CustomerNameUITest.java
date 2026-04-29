@@ -5,6 +5,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.example.api.generators.RandomModelGenerator;
 import org.example.api.models.admin.users.CreateUserRequestDTO;
 import org.example.api.models.customer.profile.UpdateProfileRequestDTO;
+import org.example.common.annotations.ApiVersion;
 import org.example.common.annotations.UserSession;
 import org.example.common.storage.SessionStorage;
 import org.example.ui.enams.BankAlert;
@@ -26,6 +27,7 @@ public class CustomerNameUITest extends BaseUITest {
 
     @Test
     @UserSession
+    @ApiVersion("with_deletion")
     public void testPositiveCustomerName() {
 
         user = SessionStorage.getUser();
@@ -46,6 +48,7 @@ public class CustomerNameUITest extends BaseUITest {
 
     @Test
     @UserSession
+    @ApiVersion("with_deletion")
     public void testegativeCustomerName() {
         CustomerNamePage page = new CustomerNamePage()
                 .open()

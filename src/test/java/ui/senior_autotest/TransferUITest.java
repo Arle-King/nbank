@@ -3,6 +3,7 @@ package ui.senior_autotest;
 import com.codeborne.selenide.Condition;
 import org.example.api.models.accoints.accounts.CreateAccountResponseDTO;
 import org.example.api.models.admin.users.CreateUserRequestDTO;
+import org.example.common.annotations.ApiVersion;
 import org.example.common.annotations.UserSession;
 import org.example.common.storage.SessionStorage;
 import org.example.ui.enams.BankAlert;
@@ -30,6 +31,7 @@ public class TransferUITest extends BaseUITest {
 
     @Test
     @UserSession
+    @ApiVersion("with_deletion")
     public void testPositiveTransfer() {
         
         user = SessionStorage.getUser();
@@ -52,6 +54,7 @@ public class TransferUITest extends BaseUITest {
 
     @Test
     @UserSession
+    @ApiVersion("with_deletion")
     public void testNegativeTransfer() {
 
         user = SessionStorage.getUser();

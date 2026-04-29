@@ -1,7 +1,9 @@
-package api.senior_autotest;
+package db;
 
 import api.BaseTest;
 import org.example.BankWidget;
+import org.example.api.dao.UserDAO;
+import org.example.api.dao.comparison.DaoAndModelAssertions;
 import org.example.api.generators.RandomModelGenerator;
 import org.example.api.models.admin.users.CreateUserResponseDTO;
 import org.example.api.models.comparison.ModelAssertions;
@@ -10,6 +12,7 @@ import org.example.api.models.customer.profile.UpdateProfileResponseDTO;
 import org.example.api.skelethon.enams.Endpoint;
 import org.example.api.skelethon.requests.CrudRequest;
 import org.example.api.skelethon.requests.ValidatedCrudRequest;
+import org.example.api.skelethon.requests.steps.DataBaseSteps;
 import org.example.api.specs.RequestSpecs;
 import org.example.api.specs.ResponceSpecs;
 import org.example.common.annotations.ApiVersion;
@@ -35,12 +38,6 @@ public class CustomerNameTest extends BaseTest {
         softAssertions.assertThat(user.getName()).as("Name не соответствует ожидаемому").isEqualTo(beginName);
     }
 
-    @AfterEach
-    public void postcondition() {
-        BankWidget.deleteUser(user);
-    }
-
-    @ApiVersion("with_deletion")
     @Test
     public void positiveTest() {
         UpdateProfileRequestDTO updateProfileRequestDTO = RandomModelGenerator.generate(UpdateProfileRequestDTO.class);
@@ -52,6 +49,10 @@ public class CustomerNameTest extends BaseTest {
                 .update(updateProfileRequestDTO);
 
         ModelAssertions.assertThatModels(updateProfileRequestDTO, userResponseDTO).match();
+
+        UserDAO userDao = DataBaseSteps.getUserByUsername(user.getUsername());
+        DaoAndModelAssertions.assertThat(updateProfileRequestDTO, userDao).match();
+
     }
 
     @ApiVersion("with_deletion")
@@ -69,6 +70,9 @@ public class CustomerNameTest extends BaseTest {
                 .update(updateProfileRequestDTO);
 
         softAssertions.assertThat(BankWidget.getUresById(user.getId()).getName()).as("Name не соответствует ожидаемому").isEqualTo(user.getName());
+
+        UserDAO userDao = DataBaseSteps.getUserByUsername(user.getUsername());
+        DaoAndModelAssertions.assertThat(BankWidget.getUresById(user.getId()), userDao).match();
     }
 
     public static Stream<Arguments> provaderNegativeCutomerName() {

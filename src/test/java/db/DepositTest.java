@@ -1,4 +1,4 @@
-package api.senior_autotest;
+package db;
 
 import api.BaseTest;
 import org.example.BankWidget;
@@ -12,17 +12,16 @@ import org.example.api.skelethon.requests.CrudRequest;
 import org.example.api.skelethon.requests.steps.DataBaseSteps;
 import org.example.api.specs.RequestSpecs;
 import org.example.api.specs.ResponceSpecs;
-import org.example.common.annotations.ApiVersion;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.example.BankWidget.*;
+import static org.example.BankWidget.deleteUser;
+import static org.example.BankWidget.getAccountById;
 
 public class DepositTest extends BaseTest {
     CreateAccountResponseDTO userAccount;
@@ -43,12 +42,6 @@ public class DepositTest extends BaseTest {
         softAssertions.assertThat(userAccount.getTransactions().size()).as("Аккаунт создался с транзакцией").isEqualTo(beginTransactions);
     }
 
-    @AfterEach
-    public void postcondition() {
-        deleteUser(user);
-    }
-
-    @ApiVersion("with_deletion")
     @MethodSource("provaderPositiveDeposit")
     @ParameterizedTest
     public void testPositiveDeposit(Double amount) {
@@ -60,11 +53,11 @@ public class DepositTest extends BaseTest {
 
         var account = getAccountById(userAccount.getId());
 
-        softAssertions.assertThat(account.getTransactions().size()).as("Количество транзакций не соответсвует ожидаемому").isEqualTo(beginTransactions + 1);
-        softAssertions.assertThat(account.getBalance()).as("Баланс не соответствует ожидаемому").isEqualTo(amount);
+        AccountDAO accountDao = DataBaseSteps.getAccountByAccountNumber(userAccount.getAccountNumber());
+
+        DaoAndModelAssertions.assertThat(account, accountDao).match();
     }
 
-    @ApiVersion("with_deletion")
     @MethodSource("provaderNegativeDeposit")
     @ParameterizedTest
     public void testNegativeDeposit(Double amount, String errorKey, String errorValue) {
@@ -75,11 +68,9 @@ public class DepositTest extends BaseTest {
                 ResponceSpecs.requestReturnsBadRequest(errorKey, errorValue))
                 .post(new DepositRequestDTO(userAccount.getId(), amount));
 
-        var account = getAccountById(userAccount.getId());
+        AccountDAO accountDao = DataBaseSteps.getAccountByAccountNumber(userAccount.getAccountNumber());
 
-        softAssertions.assertThat(account.getTransactions().size()).as("Количество транзакций не соответсвует ожидаемому").isEqualTo(beginTransactions);
-        softAssertions.assertThat(account.getBalance()).as("Баланс не соответствует ожидаемому").isEqualTo(beginBalance);
-
+        DaoAndModelAssertions.assertThat(userAccount, accountDao).match();
 
     }
 

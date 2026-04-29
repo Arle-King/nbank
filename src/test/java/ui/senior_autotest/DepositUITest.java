@@ -2,6 +2,7 @@ package ui.senior_autotest;
 
 import com.codeborne.selenide.Condition;
 import org.example.api.models.accoints.accounts.CreateAccountResponseDTO;
+import org.example.common.annotations.ApiVersion;
 import org.example.common.annotations.UserSession;
 import org.example.common.storage.SessionStorage;
 import org.example.ui.enams.BankAlert;
@@ -22,6 +23,7 @@ public class DepositUITest extends BaseUITest {
 
     @Test
     @UserSession
+    @ApiVersion("with_deletion")
     public void testPositiveDeposit() {
 
         userAccount = SessionStorage.getSteps().createAccount().get(0);
@@ -39,6 +41,7 @@ public class DepositUITest extends BaseUITest {
 
     @Test
     @UserSession
+    @ApiVersion("with_deletion")
     public void testNegativeDeposit() {
         banalce+= 5000;
 
