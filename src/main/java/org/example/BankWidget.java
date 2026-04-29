@@ -1,18 +1,18 @@
 package org.example;
 
 import io.restassured.common.mapper.TypeRef;
-import org.example.generators.RandomModelGenerator;
-import org.example.models.accoints.accounts.AccountDTO;
-import org.example.models.accoints.accounts.CreateAccountRequestDTO;
-import org.example.models.accoints.accounts.CreateAccountResponseDTO;
-import org.example.models.accoints.deposit.DepositRequestDTO;
-import org.example.models.admin.users.CreateUserRequestDTO;
-import org.example.models.admin.users.CreateUserResponseDTO;
-import org.example.requests.skelethon.enams.Endpoint;
-import org.example.requests.skelethon.requests.CrudRequest;
-import org.example.requests.skelethon.requests.ValidatedCrudRequest;
-import org.example.specs.RequestSpecs;
-import org.example.specs.ResponceSpecs;
+import org.example.api.generators.RandomModelGenerator;
+import org.example.api.models.accoints.accounts.AccountDTO;
+import org.example.api.models.accoints.accounts.CreateAccountRequestDTO;
+import org.example.api.models.accoints.accounts.CreateAccountResponseDTO;
+import org.example.api.models.accoints.deposit.DepositRequestDTO;
+import org.example.api.models.admin.users.CreateUserRequestDTO;
+import org.example.api.models.admin.users.CreateUserResponseDTO;
+import org.example.api.skelethon.enams.Endpoint;
+import org.example.api.skelethon.requests.CrudRequest;
+import org.example.api.skelethon.requests.ValidatedCrudRequest;
+import org.example.api.specs.RequestSpecs;
+import org.example.api.specs.ResponceSpecs;
 
 import java.util.List;
 
@@ -69,6 +69,14 @@ public class BankWidget {
         } while (amount > 0);
     }
 
+    public static CreateUserResponseDTO getUserByUsername(String username) {
+        return getAllUsers().stream()
+                .filter(userN -> userN.getUsername().equals(username))
+                .findFirst()
+                .orElse(null);
+
+    }
+
     public static void deleteUser(CreateUserResponseDTO user) {
         deleteAllUserAccounts(user);
         new CrudRequest(
@@ -76,6 +84,21 @@ public class BankWidget {
                 Endpoint.DELETE_USER,
                 ResponceSpecs.requestReturnsOk())
                 .delete(user.getId());
+    }
+
+    public static void deleteUser(String username) {
+        CreateUserResponseDTO user = getAllUsers().stream().filter(userN -> userN.getUsername().equals(username)).findFirst().orElse(null);
+        assert user != null;
+        deleteAllUserAccounts(user);
+        new CrudRequest(
+                RequestSpecs.getAdminSpec(),
+                Endpoint.DELETE_USER,
+                ResponceSpecs.requestReturnsOk())
+                .delete(user.getId());
+    }
+
+    public static String getCustomName(String username) {
+        return getUserByUsername(username).getName();
     }
 
     public static void deleteAccount(CreateUserResponseDTO user, int accountId) {
@@ -116,5 +139,9 @@ public class BankWidget {
 
     public static CreateAccountResponseDTO createAccount(CreateUserResponseDTO user) {
         return createAccount(user.getUsername(), user.getPassword());
+    }
+
+    public static CreateUserRequestDTO getAdmin() {
+        return CreateUserRequestDTO.builder().username("admin").password("admin").build();
     }
 }
