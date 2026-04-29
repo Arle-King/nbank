@@ -9,6 +9,7 @@ import org.example.api.skelethon.enams.Endpoint;
 import org.example.api.skelethon.requests.CrudRequest;
 import org.example.api.specs.RequestSpecs;
 import org.example.api.specs.ResponceSpecs;
+import org.example.common.annotations.ApiVersion;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,6 +77,7 @@ public class TransferTest extends BaseTest {
         BankWidget.deleteUser(user2);
     }
 
+    @ApiVersion("with_deletion")
     @ParameterizedTest
     @MethodSource("provaderPositiveTransfer")
     public void positiveTransferTest(Double balance, int receiverAccountId, Double amount) {
@@ -103,6 +105,7 @@ public class TransferTest extends BaseTest {
         softAssertions.assertThat(getAccountById(userAccounts.get(receiverAccountId).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(startCount + 1);
     }
 
+    @ApiVersion("with_deletion")
     @ParameterizedTest
     @MethodSource("provaderNegativeTransfer")
     public void negativeTransferTest(Double balance, int receiverAccountId, Double amount, String errorKey, String errorValue) {
@@ -130,6 +133,7 @@ public class TransferTest extends BaseTest {
         softAssertions.assertThat(getAccountById(userAccounts.get(receiverAccountId).getId()).getTransactions().size()).as("Количество транзакций не совпадает с ожидаемым").isEqualTo(startCount);
     }
 
+    @ApiVersion("with_deletion")
     @Test
     public void nonExistAccountTransfer() {
         Double balance = 2000.0;

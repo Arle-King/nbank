@@ -1,5 +1,6 @@
 package org.example.api.models.accoints.transactions;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,18 +12,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class TransactionDTO {
-    @SerializedName("id")
+    @JsonProperty("id")
     private int id;
 
-    @SerializedName("amount")
+    @JsonProperty("amount")
     private Double amount;
 
-    @SerializedName("type")
+    @JsonProperty("type")
     private String type;
 
-    @SerializedName("timestamp")
+    @JsonProperty("timestamp")
     private String time;
 
-    @SerializedName("relatedAccountId")
+    @JsonProperty("relatedAccountId")
     private int relatedAccountId;
 }

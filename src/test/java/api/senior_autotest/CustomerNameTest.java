@@ -12,6 +12,7 @@ import org.example.api.skelethon.requests.CrudRequest;
 import org.example.api.skelethon.requests.ValidatedCrudRequest;
 import org.example.api.specs.RequestSpecs;
 import org.example.api.specs.ResponceSpecs;
+import org.example.common.annotations.ApiVersion;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,7 @@ public class CustomerNameTest extends BaseTest {
         BankWidget.deleteUser(user);
     }
 
+    @ApiVersion("with_deletion")
     @Test
     public void positiveTest() {
         UpdateProfileRequestDTO updateProfileRequestDTO = RandomModelGenerator.generate(UpdateProfileRequestDTO.class);
@@ -52,6 +54,7 @@ public class CustomerNameTest extends BaseTest {
         ModelAssertions.assertThatModels(updateProfileRequestDTO, userResponseDTO).match();
     }
 
+    @ApiVersion("with_deletion")
     @MethodSource("provaderNegativeCutomerName")
     @ParameterizedTest
     public void negativeTest(String newName, String errorKey, String errorValue) {

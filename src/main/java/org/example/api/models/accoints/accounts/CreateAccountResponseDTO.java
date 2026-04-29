@@ -1,5 +1,6 @@
 package org.example.api.models.accoints.accounts;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import org.example.api.models.BaseModel;
@@ -9,15 +10,15 @@ import java.util.List;
 
 @Getter
 public class CreateAccountResponseDTO extends BaseModel {
-    @SerializedName("id")
+    @JsonProperty("id")
     private int id;
 
-    @SerializedName("accountNumber")
+    @JsonProperty("accountNumber")
     private String accountNumber;
 
-    @SerializedName("balance")
+    @JsonProperty("balance")
     private Double balance;
 
-    @SerializedName("transactions")
+    @JsonProperty("transactions")
     private List<TransactionDTO> transactions;
 }

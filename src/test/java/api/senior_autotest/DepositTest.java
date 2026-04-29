@@ -9,16 +9,17 @@ import org.example.api.skelethon.enams.Endpoint;
 import org.example.api.skelethon.requests.CrudRequest;
 import org.example.api.specs.RequestSpecs;
 import org.example.api.specs.ResponceSpecs;
+import org.example.common.annotations.ApiVersion;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.example.BankWidget.deleteUser;
-import static org.example.BankWidget.getAccountById;
+import static org.example.BankWidget.*;
 
 public class DepositTest extends BaseTest {
     CreateAccountResponseDTO userAccount;
@@ -30,7 +31,6 @@ public class DepositTest extends BaseTest {
 
     @BeforeEach
     public void precondition() {
-        //по хорошему убрать бы эту строку и эти softAssertions вообще должны быть на других тестах, но посколько у меня их нет, то увы
         super.precondition();
         user = BankWidget.createUser();
 
@@ -45,6 +45,12 @@ public class DepositTest extends BaseTest {
         deleteUser(user);
     }
 
+    @Test
+    public void test() {
+        getAllUsers();
+    }
+
+    @ApiVersion("with_deletion")
     @MethodSource("provaderPositiveDeposit")
     @ParameterizedTest
     public void testPositiveDeposit(Double amount) {
@@ -60,6 +66,7 @@ public class DepositTest extends BaseTest {
         softAssertions.assertThat(account.getBalance()).as("Баланс не соответствует ожидаемому").isEqualTo(amount);
     }
 
+    @ApiVersion("with_deletion")
     @MethodSource("provaderNegativeDeposit")
     @ParameterizedTest
     public void testNegativeDeposit(Double amount, String errorKey, String errorValue) {
