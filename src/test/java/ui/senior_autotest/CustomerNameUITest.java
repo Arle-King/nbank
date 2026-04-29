@@ -21,7 +21,7 @@ public class CustomerNameUITest extends BaseUITest {
 
     CreateUserRequestDTO user;
     final String newName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName();
-    final String welcomeText = "Welcome, " + newName + "!";
+    String welcomeTextNew = DeshboardPage.welcomeTextNewname.replace("noname", newName);
     final String newErrorName = RandomModelGenerator.generate(UpdateProfileRequestDTO.class).getName() + RandomStringUtils.random(1, "!@#$%^&*1234567890");
 
     @Test
@@ -38,7 +38,7 @@ public class CustomerNameUITest extends BaseUITest {
 
         page.getDashboard().shouldBe(Condition.visible);
 
-        assertEquals(page.getWelcomeText().getText(), welcomeText);
+        assertEquals(page.getWelcomeText().getText(), welcomeTextNew);
         assertEquals(page.getUsername().getText(), newName);
 
         assertEquals(getUserByUsername(user.getUsername()).getName(), newName);
