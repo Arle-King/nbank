@@ -11,6 +11,7 @@ public class DeshboardPage extends BasePage<DeshboardPage> {
     String xpathDashboard = "//*[contains(text(), 'User Dashboard')]";
     String xpathWelcomeText = "//*[contains(text(), 'Welcome, ')]";
     String xpathUsername = "//span[@class='user-name']";
+    public final static String welcomeTextNewname = "Welcome, noname!";
 
     @Override
     public String endpoint() {
