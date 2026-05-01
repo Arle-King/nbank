@@ -7,7 +7,9 @@ import org.example.api.models.accoints.accounts.CreateAccountRequestDTO;
 import org.example.api.models.accoints.accounts.CreateAccountResponseDTO;
 import org.example.api.models.accoints.accounts.DeleteAccountRequestDTO;
 import org.example.api.models.accoints.accounts.DeleteAccountResponseDTO;
+import org.example.api.models.accoints.deposit.DepositRequest;
 import org.example.api.models.accoints.deposit.DepositRequestDTO;
+import org.example.api.models.accoints.deposit.DepositResponse;
 import org.example.api.models.accoints.deposit.DepositResponseDTO;
 import org.example.api.models.accoints.transactions.TransactionsRequestDTO;
 import org.example.api.models.accoints.transfer.TransferRequestDTO;
@@ -37,6 +39,12 @@ public enum Endpoint {
             TransferResponseDTO.class
     ),
 
+    TRANSFER_WITH_FRAUD_CHECK(
+      "/accounts/transfer-with-fraud-check",
+      TransferRequestDTO.class,
+      TransferResponseDTO.class
+    ),
+
     DEPOSIT(
             "/accounts/deposit",
             DepositRequestDTO.class,
@@ -47,6 +55,12 @@ public enum Endpoint {
             "/accounts/id#1/transactions",
             TransactionsRequestDTO.class,
             TransferResponseDTO.class
+    ),
+
+    ACCOUNT_DEPOSIT(
+            "/accounts/deposit",
+            DepositRequest.class,
+            DepositResponse.class
     ),
 
     DELETE_ACCOUNT(

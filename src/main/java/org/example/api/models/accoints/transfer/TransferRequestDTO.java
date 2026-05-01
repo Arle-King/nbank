@@ -1,5 +1,6 @@
 package org.example.api.models.accoints.transfer;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,12 +13,15 @@ import org.example.api.models.BaseModel;
 @NoArgsConstructor
 @Builder
 public class TransferRequestDTO extends BaseModel {
-    @SerializedName("senderAccountId")
-    private int senderAccountId;
+    @JsonProperty("senderAccountId")
+    private Long senderAccountId;
 
-    @SerializedName("receiverAccountId")
-    private int receiverAccountId;
+    @JsonProperty("receiverAccountId")
+    private Long receiverAccountId;
 
-    @SerializedName("amount")
+    @JsonProperty("amount")
     private Double amount;
+
+    @JsonProperty("description")
+    private String description;
 }

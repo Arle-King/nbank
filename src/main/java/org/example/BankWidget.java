@@ -6,6 +6,8 @@ import org.example.api.models.accoints.accounts.AccountDTO;
 import org.example.api.models.accoints.accounts.CreateAccountRequestDTO;
 import org.example.api.models.accoints.accounts.CreateAccountResponseDTO;
 import org.example.api.models.accoints.deposit.DepositRequestDTO;
+import org.example.api.models.accoints.transfer.TransferRequestDTO;
+import org.example.api.models.accoints.transfer.TransferResponseDTO;
 import org.example.api.models.admin.users.CreateUserRequestDTO;
 import org.example.api.models.admin.users.CreateUserResponseDTO;
 import org.example.api.skelethon.enams.Endpoint;
@@ -13,6 +15,7 @@ import org.example.api.skelethon.requests.CrudRequest;
 import org.example.api.skelethon.requests.ValidatedCrudRequest;
 import org.example.api.specs.RequestSpecs;
 import org.example.api.specs.ResponceSpecs;
+import org.example.common.helpers.StepLogger;
 
 import java.util.List;
 
@@ -60,6 +63,26 @@ public class BankWidget {
             } else {
                 new CrudRequest(
                         RequestSpecs.getUserSpec(name, password),
+                        Endpoint.DEPOSIT,
+                        ResponceSpecs.requestReturnsOk())
+                        .post(new DepositRequestDTO(accountId, amount));
+            }
+            amount = amount - 5000;
+
+        } while (amount > 0);
+    }
+
+    public static void dodepInAccount(CreateUserResponseDTO user, int accountId, Double amount) {
+        do {
+            if (amount > 5001) {
+                new CrudRequest(
+                        RequestSpecs.getUserSpec(user.getUsername(), user.getPassword()),
+                        Endpoint.DEPOSIT,
+                        ResponceSpecs.requestReturnsOk())
+                        .post(new DepositRequestDTO(accountId, 5000.0));
+            } else {
+                new CrudRequest(
+                        RequestSpecs.getUserSpec(user.getUsername(), user.getPassword()),
                         Endpoint.DEPOSIT,
                         ResponceSpecs.requestReturnsOk())
                         .post(new DepositRequestDTO(accountId, amount));

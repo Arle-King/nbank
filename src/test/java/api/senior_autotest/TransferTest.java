@@ -84,8 +84,8 @@ public class TransferTest extends BaseTest {
         BankWidget.dodepInAccount(user1.getUsername(), user1.getPassword(), userAccounts.get(0).getId(), balance);
 
         TransferRequestDTO transferRequestDTO = TransferRequestDTO.builder()
-                .senderAccountId(userAccounts.get(0).getId())
-                .receiverAccountId(userAccounts.get(receiverAccountId).getId())
+                .senderAccountId((long) userAccounts.get(0).getId())
+                .receiverAccountId((long) userAccounts.get(receiverAccountId).getId())
                 .amount(amount)
                 .build();
 
@@ -112,8 +112,8 @@ public class TransferTest extends BaseTest {
         BankWidget.dodepInAccount(user1.getUsername(), user1.getPassword(), userAccounts.get(0).getId(), balance);
 
         TransferRequestDTO transferRequestDTO = TransferRequestDTO.builder()
-                .senderAccountId(userAccounts.get(0).getId())
-                .receiverAccountId(userAccounts.get(receiverAccountId).getId())
+                .senderAccountId((long) userAccounts.get(0).getId())
+                .receiverAccountId((long) userAccounts.get(receiverAccountId).getId())
                 .amount(amount)
                 .build();
 
@@ -140,8 +140,8 @@ public class TransferTest extends BaseTest {
         BankWidget.dodepInAccount(user1.getUsername(), user1.getPassword(), userAccounts.get(0).getId(), balance);
 
         TransferRequestDTO transferRequestDTO = TransferRequestDTO.builder()
-                .senderAccountId(userAccounts.get(0).getId())
-                .receiverAccountId(0)
+                .senderAccountId((long) userAccounts.get(0).getId())
+                .receiverAccountId(0L)
                 .amount(balance)
                 .build();
 

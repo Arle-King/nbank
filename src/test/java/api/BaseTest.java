@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith(ApiVersionExtension.class)
+@ExtendWith({ApiVersionExtension.class})
 public class BaseTest {
     protected SoftAssertions softAssertions;
 
