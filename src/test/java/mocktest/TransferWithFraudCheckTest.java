@@ -25,8 +25,12 @@ public class TransferWithFraudCheckTest extends BaseTest {
 
     double transferAmount;
 
-    final static String errorKey = "transfer";
-    final static String errorValue = "Invalid transfer: insufficient funds or invalid accounts";
+    final static String mockStatus = "APPROVED";
+    final static String mockMassage = "Transfer approved and processed immediately";
+    final static double mokcRickLevel = 0.2;
+    final static String mockReason = "Low risk transaction";
+    final static boolean mockManualReview = false;
+    final static boolean mockVerification = false;
 
     @BeforeEach
     public void precondition() {
@@ -39,7 +43,7 @@ public class TransferWithFraudCheckTest extends BaseTest {
         user1Account = BankWidget.createAccount(user1);
         user2Account = BankWidget.createAccount(user2);
 
-        double depositAmount = 4000.0; //Math.random() * 4999.9 + 0.1;
+        double depositAmount = Math.random() * 4999.9 + 0.1;
 
         userSteps.depositToAccount((long) user1Account.getId(), depositAmount);
 
@@ -67,15 +71,15 @@ public class TransferWithFraudCheckTest extends BaseTest {
 
 
         TransferResponseDTO expectedResponse = TransferResponseDTO.builder()
-                .status("APPROVED")
-                .message("Transfer approved and processed immediately")
+                .status(mockStatus)
+                .message(mockMassage)
                 .amount(transferAmount)
                 .senderAccountId((long) user1Account.getId())
                 .receiverAccountId((long) user2Account.getId())
-                .fraudRiskScore(0.2)
-                .fraudReason("Low risk transaction")
-                .requiresManualReview(false)
-                .requiresVerification(false)
+                .fraudRiskScore(mokcRickLevel)
+                .fraudReason(mockReason)
+                .requiresManualReview(mockManualReview)
+                .requiresVerification(mockVerification)
                 .build();
 
         ModelAssertions.assertThatModels(expectedResponse, transferResponse).match();
